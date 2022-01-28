@@ -1,5 +1,5 @@
 let bolas = document.getElementsByClassName('bola')
-
+console.log(bolas)
 
 
 let mT =    //matrix Tabuleiro = representa 7 colunas // 6 linhas de jogadas
