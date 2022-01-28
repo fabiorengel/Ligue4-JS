@@ -1,0 +1,103 @@
+@charset "UTF-8";
+
+:root {
+    --cor1: coral;
+    
+    --cor3: black;
+
+    --cor5: rgb(255, 92, 80);
+    --cor6: white;
+    --cor7: black; // cor do tabuleiro
+    --branco: white;
+}
+
+* {
+        margin: 0px;
+        padding: 0px;
+}
+
+body {
+    background-color: var(--cor1);
+    padding: 20px;
+}
+
+h1 { 
+    background-color: var(--cor5);
+    border: 5px solid black;
+    text-align: center;
+    
+}
+main {
+    margin: auto;
+    background-color: var(--branco);
+    //padding: 20px 0px;
+    border: 5px solid black;
+    //width: 100vw;
+}
+
+#tabuleiro {
+    background-color: var(--cor7);
+    max-height: 600px;
+    max-width: 700px;
+    min-height: 251px;
+    min-width: 294px;
+    margin: 0;
+    border: 2px solid var(--cor7);
+    border-top: 0px;
+    padding-top: 25px;
+    //padding-bottom: 0px;
+}
+
+
+.linha {
+    width: 100%;
+    //height: 64px;
+    background: var(--cor7);
+    display: flex;
+    justify-content: space-between;
+}
+
+.bJogar {
+    display: block;
+    width: 13%;
+    }
+
+.quadrado {
+    display: block;
+    width: 13%;
+    height: 64px;
+    background-color: var(--cor3);
+    
+}
+
+.bola  {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-color: var(--cor6);
+    border-radius: 50%;
+    padding-bottom: 0px;    
+}
+
+
+/*div.quadrado {
+display: inline;
+border: 25px solid rgb(0, 0, 0);
+padding-bottom: 0px;
+}
+*/
+/*
+span.blue {
+    border: 30px solid rgb(0, 0, 255);
+}
+
+span.amarelo{
+    border: 30px solid rgba(255, 255, 0);
+}
+
+    ody {
+    border-color: rgb(126, 49, 49);
+    height: 30px;
+    width: 30px;    
+    border-width: 50px;
+} */
