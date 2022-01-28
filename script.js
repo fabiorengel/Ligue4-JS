@@ -11,12 +11,16 @@ let mT =    //matrix Tabuleiro = representa 7 colunas // 6 linhas de jogadas
             [0,0,0,0,0,0,0],
             [0,0,0,0,0,0,0],
         ]
-
-
-function col(x, y, player) {
-        console.log('teste1')
-        let nMatrix = Number(x)*6+Number(y)
-        bolas[nMatrix].style.backgroundColor = 'black'
+        console.log(mT)
+        
+        
+        function col(x, y, player) {
+            
+            let nMatrix = Number(x)+Number(y)*0
+            bolas[nMatrix].style.backgroundColor = 'yellow'
+            mT[x][y] = player
+            console.log(mT)
+            
 }
 
 /*function linhaDisponivel(Col,lin, player) {
