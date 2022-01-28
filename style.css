@@ -2,13 +2,9 @@
 
 :root {
     --cor1: coral;
-    
-    --cor3: black;
-
     --cor5: rgb(255, 92, 80);
-    --cor6: white;
+    --cor6: rgba(211, 137, 114, 0.829);
     --cor7: black; // cor do tabuleiro
-    --branco: white;
 }
 
 * {
@@ -29,7 +25,7 @@ h1 {
 }
 main {
     margin: auto;
-    background-color: var(--branco);
+    background-color: var(--cor6);
     //padding: 20px 0px;
     border: 5px solid black;
     //width: 100vw;
@@ -41,7 +37,7 @@ main {
     max-width: 700px;
     min-height: 251px;
     min-width: 294px;
-    margin: 0;
+    margin: auto;
     border: 2px solid var(--cor7);
     border-top: 0px;
     padding-top: 25px;
@@ -66,7 +62,7 @@ main {
     display: block;
     width: 13%;
     height: 64px;
-    background-color: var(--cor3);
+    background-color: var(--cor7);
     
 }
 
