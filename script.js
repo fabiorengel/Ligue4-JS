@@ -1,5 +1,5 @@
 let bolas = document.getElementsByClassName('bola')
-
+let statusJogo = document.getElementById('status')
 
 let mT =    //matrix Tabuleiro = representa 7 colunas // 6 linhas de jogadas
 [
@@ -12,11 +12,10 @@ let mT =    //matrix Tabuleiro = representa 7 colunas // 6 linhas de jogadas
     [0,0,0,0,0,0]  // coluna 6 
 ]
 
-//console.log(mT)
 
 function casaLivre(x,y) {
     console.log(x + y)
-
+    
     while (mT[x][y] != 0 && y > 0) {
         y--
     } 
@@ -31,17 +30,26 @@ function casaLivre(x,y) {
 
 function col(x, y, player) {
     console.log(x)
-let cLivre = casaLivre(x,y) 
-//console.log(cLivre[0],cLivre[1])    
+    let cLivre = casaLivre(x,y) 
+    //console.log(cLivre[0],cLivre[1])    
     if (cLivre[0]) {
         let nMatrix = Number(x)+Number(cLivre[1])*7
         bolas[nMatrix].style.backgroundColor = 'yellow'
         mT[x][cLivre[1]] = player
+        alteraStatus(1)
     }
     else {
         alert('Jogada Inválida')
     }
 }    
+
+function alteraStatus(x) {
+    if (x=1) {
+        statusJogo.innerText = 'Vez do computador jogar'
+    }
+}
+
+//console.log(mT)
 //console.log(mT)
 
 

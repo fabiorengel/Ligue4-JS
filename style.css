@@ -26,9 +26,12 @@ h1 {
 main {
     margin: auto;
     background-color: var(--cor6);
-    //padding: 20px 0px;
     border: 5px solid black;
-    //width: 100vw;
+}
+
+#status {
+    padding-bottom: 2em;
+    color:beige;
 }
 
 #tabuleiro {
