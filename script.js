@@ -1,90 +1,101 @@
 let bolas = document.getElementsByClassName('bola')
 let statusJogo = document.getElementById('status')
+let mT     //matrix Tabuleiro = representa 7 colunas // 6 linhas de jogadas - inicializada em reiniciarPartida
+let currentStatus   // Armazena o estado atual do jogo:
+// 0 = Vez no Player 1
+// 1 = Vez do NPC / Player 2
+// 2 = Partida Terminada = Player 1 Ganhou
+// 3 = Partida Terminada = NPC / Player 2 Ganhou */
+// inicializada em reiniciarPartida
 
-let mT =    //matrix Tabuleiro = representa 7 colunas // 6 linhas de jogadas
-[
-    [0,0,0,0,0,0], // coluna 0 
-    [0,0,0,0,0,0], // coluna 1 
-    [0,0,0,0,0,0], // coluna 2 
-    [0,0,0,0,0,0], // coluna 3 
-    [0,0,0,0,0,0], // coluna 4 
-    [0,0,0,0,0,0], // coluna 5 
-    [0,0,0,0,0,0]  // coluna 6 
-]
-
-
-function casaLivre(x,y) {
-    console.log(x + y)
-    
-    while (mT[x][y] != 0 && y > 0) {
-        y--
-    } 
-    if (mT[x][y] != 0) {
-        return [false]
-    }
-    else {
-        return [true, y]
-    }
-    
-}
-
-function col(x, y, player) {
-    console.log(x)
-    let cLivre = casaLivre(x,y) 
-    //console.log(cLivre[0],cLivre[1])    
-    if (cLivre[0]) {
-        let nMatrix = Number(x)+Number(cLivre[1])*7
-        bolas[nMatrix].style.backgroundColor = 'yellow'
-        mT[x][cLivre[1]] = player
-        alteraStatus(1)
-    }
-    else {
-        alert('Jogada Inválida')
-    }
-}    
-
-function alteraStatus(x) {
-    if (x=1) {
-        statusJogo.innerText = 'Vez do computador jogar'
-    }
-}
-
-//console.log(mT)
-//console.log(mT)
-
-
-//return true
-
-/*function linhaDisponivel(Col,lin, player) {
-    while (mT[col][lin] != 0 || linha >= 0 ){ 
-        if (mT[col][lin] != 0) {
-            mT[col][lin] = player
-            console.log('teste12')
-            
+    function alteraStatus(x) {
+        currentStatus = x
+        if (x==1) {
+            statusJogo.innerText = 'Vez do computador jogar'
+            vaiComputador() // chama o NPC
+        }
+        else if (x==2) {
+            statusJogo.innerText = 'Oxê, você ganhou!'
+        }
+        else if (x==3) {
+            statusJogo.innerText = 'Achou que podia me ganhar, né? Achou errado!'
         }
         else {
-            col-=7
+            statusJogo.innerText = 'jogue, abestado!'
         }
-    } 
-}
+    }
 
-console.log(bolas)
-let n = 2
+    function casaLivre(x,y) {
+        /* Dada a coluna de "lançamento", verifica a primeira linha, de baixo pra cima, disponivel para jogada, Se houver linha diponível, retorna true e a linha, senão, retorna false.   */
+        while (mT[x][y] != 0 && y > 0) {
+            y--
+        } 
+        if (mT[x][y] != 0) {
+            return [false]
+        }
+        else {
+            return [true, y]
+        }
+    }
 
+    function col(x, y, player) { 
+        // Função chamada pela jogada de Player1 - Button por enquanto
+        if (currentStatus == 0) {
+            let cLivre = casaLivre(x,y) 
+            if (cLivre[0]) {
+                let posVetor = Number(x)+Number(cLivre[1])*7 //
+                bolas[posVetor].style.backgroundColor = 'yellow'
+                mT[x][cLivre[1]] = player
+                alteraStatus(1)
+            }
+            else {
+                alert('Jogada Inválida')
+            }
+        }
+        else if (currentStatus == 1) {
+            statusJogo.innerText = 'Espere a sua vez, parça'
+        }
+        else {
+            statusJogo.innerText = 'O jogo acabou. Aperte Reiniciar'
+        }
+    }    
 
-//for (let cont1 = 0; cont1 > 36; cont1++){
-//}
+    function vaiComputador() {
+        // Jogada do computador.
+        let aux = true
+        let aux2
+        let x = 0
+        while  (x < 7 && aux)  {
+            aux2 = casaLivre(x,5) 
+            if (aux2[0]) {
+                aux=false
+            }
+            else {
+            x++   
+            }      
+        }
+        if (!aux) { // if termporario para parar o programa quando a matriz estiver cheia. No futuro não será necessário
+            let posVetor = Number(x)+Number(aux2[1])*7 
+            bolas[posVetor].style.backgroundColor = 'red'
+            mT[x][aux2[1]] = 'npc'
+            alteraStatus(0)
+        }
+    }
 
-let X = document.createElement('div')
+    function reiniciarPartida() 
+    {
+        
+        mT =    //matrix Tabuleiro = representa 7 colunas // 6 linhas de jogadas
+        // Dá pra fazer por laço, mas não é interessante.
+            [
+            [0,0,0,0,0,0], // coluna 0 
+            [0,0,0,0,0,0], // coluna 1 
+            [0,0,0,0,0,0], // coluna 2 
+            [0,0,0,0,0,0], // coluna 3 
+            [0,0,0,0,0,0], // coluna 4 
+            [0,0,0,0,0,0], // coluna 5 
+            [0,0,0,0,0,0]  // coluna 6 
+        ]
 
-
-function carregar() {
-   // alert('teste' + bolas[2].innerHTML)
-    //bolas[n].innerHTML = ''
-    //X.document.body.appendChild('eu de novo')
-    console.log("teste")
-}
-
-//X.innerHTML = 'eu de novo'
-//let tab = document.getElementById('tabuleiro')
-//let matTab = [[1,2][1,2]]*/
+        currentStatus = 0  
+    }
