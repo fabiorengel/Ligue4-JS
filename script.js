@@ -39,7 +39,7 @@ let cLivre = casaLivre(x,y)
         mT[x][cLivre[1]] = player
     }
     else {
-        alert('Jogada Invalida')
+        alert('Jogada Inválida')
     }
 }    
 //console.log(mT)
