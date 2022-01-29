@@ -38,6 +38,9 @@ let cLivre = casaLivre(x,y)
         bolas[nMatrix].style.backgroundColor = 'yellow'
         mT[x][cLivre[1]] = player
     }
+    else {
+        alert('Jogada Invalida')
+    }
 }    
 //console.log(mT)
 
