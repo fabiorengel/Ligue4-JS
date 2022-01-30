@@ -111,7 +111,6 @@ let currentStatus
                 mT[x][aux2[1]] = 'npc'
                 
                 zzzConfereGanhador(x,aux2[1],'npc')
-                console.log("here")
                 if (currentStatus == 1){ 
                     alteraStatus(0)
                 }
@@ -168,7 +167,7 @@ let currentStatus
         let auxEsqCimaX = Number(x)
         let auxEsqCimaY = Number(y)
         let auxDirBaixoX = Number(x)
-        let auxDirBaixoY = Number(y)
+        let auxDirAltoY = Number(y)
 
         while (auxEsqCimaX > 0 && auxEsqCimaY > 0  && auxBreakEsqCima == true) {
             if (mT[auxEsqCimaX][auxEsqCimaY] == mT[auxEsqCimaX-1][auxEsqCimaY-1]) { 
@@ -181,14 +180,47 @@ let currentStatus
             }
         }
 
-        while (auxDirBaixoX < 6 && auxDirBaixoY < 5  && auxBreakDirBaixo == true) {
-            if (mT[auxDirBaixoX][auxDirBaixoY] == mT[auxDirBaixoX+1][auxDirBaixoY+1]) { 
+        while (auxDirBaixoX < 6 && auxDirAltoY < 5  && auxBreakDirBaixo == true) {
+            if (mT[auxDirBaixoX][auxDirAltoY] == mT[auxDirBaixoX+1][auxDirAltoY+1]) { 
                 contSeguidas++
                 auxDirBaixoX++
-                auxDirBaixoY++
+                auxDirAltoY++
             }
             else {
                 auxBreakDirBaixo = false
+            }
+        }
+        return contSeguidas
+    }
+  
+    function confDiagonalCrescente(x,y) { 
+        let contSeguidas = 1
+        let auxBreakEsq = true
+        let auxBreakDir = true
+        let auxEsqBaixoX = Number(x)
+        let auxEsqAltoY = Number(y)
+        let auxDirAltoX = Number(x)
+        let auxDirAltoY = Number(y)
+
+        while (auxEsqBaixoX > 0 && auxEsqAltoY < 5  && auxBreakEsq == true) {
+            if (mT[auxEsqBaixoX][auxEsqAltoY] == mT[auxEsqBaixoX-1][auxEsqAltoY+1]) { 
+                contSeguidas++
+                auxEsqBaixoX--
+                auxEsqAltoY++
+            }
+            else {
+                auxBreakEsq=false
+            }
+        }
+
+        while (auxDirAltoX < 5 && auxDirAltoY < 0  && auxBreakDir == true) {
+            if (mT[auxDirAltoX][auxDirAltoY] == mT[auxDirAltoX+1][auxDirAltoY-1]) { 
+                contSeguidas++
+                auxDirAltoX++
+                auxDirAltoY--
+            }
+            else {
+                auxBreakDir = false
             }
         }
         return contSeguidas
@@ -228,6 +260,16 @@ let currentStatus
             }
             setTimeout(alert, 1000, 'Outra Partida?')
         } 
+        else if (confDiagonalCrescente(posX,posY) >=4 )  {
+            if  (player =='npc') {
+                alteraStatus(3)
+            }
+            else {
+                alteraStatus(2)
+            }
+            setTimeout(alert, 1000, 'Outra Partida?')
+        } 
+        
     }
         
         /*console.log(mT)
