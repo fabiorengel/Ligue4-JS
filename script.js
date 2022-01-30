@@ -54,6 +54,7 @@ let currentStatus
 
                 mT[x][cLivre[1]] = player //Salva na matriz a posição que a nova bola ocupa.
                 zzzConfereGanhador(x, cLivre[1], player)
+
                 if (currentStatus==0){                
                     alteraStatus(1) // Função que muda status do jogo (desde a vez de qual jogador até o termino da partida)
                 }
@@ -64,10 +65,7 @@ let currentStatus
         }
         else if (currentStatus == 1) {
             statusJogo.innerText = 'Espere a sua vez, parça'
-        }
-        else {
-            statusJogo.innerText = 'O jogo acabou. Aperte Reiniciar'
-        }
+        }        
     }    
 
     function reiniciarPartida() {
@@ -113,40 +111,124 @@ let currentStatus
                 mT[x][aux2[1]] = 'npc'
                 
                 zzzConfereGanhador(x,aux2[1],'npc')
-         
+                console.log("here")
                 if (currentStatus == 1){ 
                     alteraStatus(0)
                 }
             }
         }
         
-        function confVerticalPraBaixo(x,y) { 
-            let contSeguidas = 1
-            auxBreak = true
-            while (y < 6 && auxBreak==true) {
-                if (mT[x][y] == mT[x][y+1]) { 
-                    contSeguidas++
-                    y++
-                }
-                else{
-                    auxBreak=false
-                }
+    function confVerticalPraBaixo(x,y) { 
+        let contSeguidas = 1
+        auxBreak = true
+        while (y < 6 && auxBreak==true) {
+            if (mT[x][y] == mT[x][y+1]) { 
+                contSeguidas++
+                y++
             }
-            return contSeguidas
+            else{
+                auxBreak=false
+            }
         }
-        function zzzConfereGanhador (posX, posY, player) {
-            let Ganhou = confVerticalPraBaixo(posX,posY)
+        return contSeguidas
+    }
+          
+       
+    function confHorizontal(x,y) { 
+        let contSeguidas = 1
+        let auxBreakEsq = true
+        let auxBreakDir = true
+        let auxEsq = Number(x)
+        let auxDir = Number(x)
+        while (auxEsq > 0  && auxBreakEsq == true) {
+            if (mT[auxEsq][y] == mT[auxEsq-1][y]) { 
+                contSeguidas++
+                auxEsq--
+            }
+            else {
+                auxBreakEsq=false
+            }
+        }
+        while (auxDir < 6  && auxBreakDir == true) {
+            if (mT[auxDir][y] == mT[auxDir+1][y]) { 
+                contSeguidas++
+                auxDir++
+            }
+            else {
+                auxBreakDir=false
+            }
+        }
+        return contSeguidas
+    }
+ 
+    function confDiagonalDecrescente(x,y) { 
+        let contSeguidas = 1
+        let auxBreakEsqCima = true
+        let auxBreakDirBaixo = true
+        let auxEsqCimaX = Number(x)
+        let auxEsqCimaY = Number(y)
+        let auxDirBaixoX = Number(x)
+        let auxDirBaixoY = Number(y)
 
-            if (Ganhou >= 4 ) {
-                if  (player =='npc') {
-                       alteraStatus(3)
-                }
-                else {
-                    alteraStatus(2)
-                }
-                setTimeout(alert, 1000, 'Outra Partida?')
+        while (auxEsqCimaX > 0 && auxEsqCimaY > 0  && auxBreakEsqCima == true) {
+            if (mT[auxEsqCimaX][auxEsqCimaY] == mT[auxEsqCimaX-1][auxEsqCimaY-1]) { 
+                contSeguidas++
+                auxEsqCimaX--
+                auxEsqCimaY--
+            }
+            else {
+                auxBreakEsqCima=false
             }
         }
+
+        while (auxDirBaixoX < 6 && auxDirBaixoY < 5  && auxBreakDirBaixo == true) {
+            if (mT[auxDirBaixoX][auxDirBaixoY] == mT[auxDirBaixoX+1][auxDirBaixoY+1]) { 
+                contSeguidas++
+                auxDirBaixoX++
+                auxDirBaixoY++
+            }
+            else {
+                auxBreakDirBaixo = false
+            }
+        }
+        return contSeguidas
+    }
+
+
+
+
+    function zzzConfereGanhador (posX, posY, player) {
+        
+        if (confVerticalPraBaixo(posX,posY) >= 4 ) {
+            if  (player =='npc') {
+                alteraStatus(3)
+            }
+            else {
+                alteraStatus(2)
+            }
+            setTimeout(alert, 1000, 'Outra Partida?')
+        }
+        else if (confHorizontal(posX,posY) >= 4 ) {
+
+            if  (player =='npc') {
+                    alteraStatus(3)
+            }
+            else {
+                alteraStatus(2)
+            }
+            setTimeout(alert, 1000, 'Outra Partida?')
+            
+        }
+        else if (confDiagonalDecrescente(posX,posY) >=4 )  {
+            if  (player =='npc') {
+                alteraStatus(3)
+            }
+            else {
+                alteraStatus(2)
+            }
+            setTimeout(alert, 1000, 'Outra Partida?')
+        } 
+    }
         
         /*console.log(mT)
         console.log(x,aux2[1],'npc')*/
