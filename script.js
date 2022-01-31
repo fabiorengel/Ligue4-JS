@@ -2,7 +2,10 @@ let bolas = document.getElementsByClassName('bola') // class que ao mudar seu ba
 let statusJogo = document.getElementById('status') // elemento que mostra o Status do jogo (de quem é a vez, quem ganhou, etc.)
 let mT     
 /*matrix Tabuleiro = representa 7 colunas // 6 linhas de jogadas - inicializada em reiniciarPartida*/
-let currentStatus   
+let currentStatus 
+let corP1 = 'yellow' 
+let corNPC = 'red' 
+let corVazia = 'rgba(1, 0, 0, 0.550)'
 
 /*  currentStatus: Variável que armazena o estado atual do jogo:
     0 = Vez no Player 1
@@ -22,13 +25,12 @@ let currentStatus
             statusJogo.innerText = 'Parabéns, você ganhou!'
         }
         else if (s==3) {
-            statusJogo.innerText = 'O computador ganhou. Mais sorte na próxima vez!'
-        }
+            statusJogo.innerText = 'Computador ganhou. Mais sorte na próxima vez!'
+        }    
         else {
             statusJogo.innerText = 'Sua vez...'
         }
     }
-
     function casaLivre(j,i) {
         /* Dada a coluna de "lançamento" j e uma linha default (normalmente a ultima (5)), verifica de baixo pra cima a primeira linha disponivel para jogada. Se houver linha diponível, retorna true e a linha, senão, retorna false.   */
         while (mT[j][i] != 0 && i > 0) { //enquanto a casa não estiver vazia e ainda houver linha: suba uma casa
@@ -41,17 +43,13 @@ let currentStatus
             return [true, i]
         }
     }
-
     function col(j, i, player) { 
         // Função chamada pela jogada de Player1 - Button por enquanto
+        
         if (currentStatus == 0) { // confere se é a vez do jogador
             let cLivre = casaLivre(j, i) // Passa a coluna escolhida e a ultima linha (5) que são recebidos por parametro do HTML e retornam [true a primeira linha dispinivel] para jogada na mesma coluna. Caso não tenha, recebe false.
             if (cLivre[0]) { // Verifica tinha casa disponivel procede com a jogada
-                // Daqui
                     efetuaJogada(j , cLivre[1], player)
-                // até aqui, o código altera a cor da bola equivalente, trasformando a matriz 6x7 em um vetor de 42 posições. (div.bola 0a41)
-                zzzConfereGanhador(j, cLivre[1], player)
-
                 if (currentStatus == 0){                
                     alteraStatus(1) // Função que muda status do jogo (desde a vez de qual jogador até o termino da partida)
                 }
@@ -64,8 +62,7 @@ let currentStatus
             statusJogo.innerHTML = `<strong> É a vez do computador. Espere!</strong>`
         }        
     }    
-
-    function reiniciarPartida() {
+    function reiniciarPartida(quemComeca) {
         
         mT =    //matrix Tabuleiro = representa 7 colunas // 6 linhas de jogadas
         // Dá pra fazer por laço, mas não é interessante.
@@ -78,9 +75,16 @@ let currentStatus
             [0,0,0,0,0,0], // coluna 5 
             [0,0,0,0,0,0]  // coluna 6 
         ]
-        currentStatus = 0  
+        for (var cont = 0; cont < 42; cont++ ) {
+            bolas[cont].style.backgroundColor = corVazia
+        }
+        if (quemComeca != 1) {
+            alteraStatus(0) 
+        }
+        else {
+            alteraStatus(1) 
+        } 
     }
-
     function seGanhasePerde() {
         let jGanha = 0
         let jogadaJ = 0
@@ -117,7 +121,6 @@ let currentStatus
         }
         return [aux, jogadaJ, jogadaI]
     }
-    
     function ponderarJogada(j, i, player) {
         /*função que dada a coluna "j" e o jogador "player", que pode ser "p1 ou npc", verifica se há ou haveria vitoria com a jogada. */
         if (confVerticalPraBaixo(j, i, player) >= 4 ) {
@@ -136,30 +139,26 @@ let currentStatus
             return false
         }
     }
-
     function efetuaJogada(j, i, player) { 
          
          let posVetor = Number(j)+Number(i)*7 
          mT[j][i] = player
 
          if (player == 'npc') {
-            bolas[posVetor].style.backgroundColor = 'red'
+             bolas[posVetor].style.backgroundColor = corNPC // altera a cor da bola equivalente, trasformando a matriz 6x7 em um vetor de 42 posições. (div.bola 0 a 41)
             if (currentStatus == 1) { 
                 alteraStatus(0)
            }
          }
          else {
-            bolas[posVetor].style.backgroundColor = 'yellow'
+            bolas[posVetor].style.backgroundColor = corP1 // IDEM ACIMA
          }
-         // até aqui, o código altera a cor da bola equivalente, trasformando a matriz 6x7 em um vetor de 42 posições. (div.bola 0a41)
 
          
          zzzConfereGanhador(j, i, player)
 
          
     }
-
-
     function vaiComputador() {  // Jogada do computador.
         let j
         let i 
@@ -186,7 +185,6 @@ let currentStatus
         }
         efetuaJogada(j, i, 'npc')
     }
-        
     function confVerticalPraBaixo(j, i, player) { 
         let contSeguidas = 1
         while (i < 6) {
@@ -200,7 +198,6 @@ let currentStatus
         }
         return contSeguidas
     }
-       
     function confHorizontal(j,i, player) { 
         let contSeguidas = 1
         let auxEsq = Number(j)
@@ -225,7 +222,6 @@ let currentStatus
         }
         return contSeguidas
     }
- 
     function confDiagonalDecrescente(j, i, player) { 
         let contSeguidas = 1
         let auxEsqCimaJ = Number(j)
@@ -256,7 +252,6 @@ let currentStatus
         }
         return contSeguidas
     }
-  
     function confDiagonalCrescente(j, i, player) { 
         let contSeguidas = 1
         let auxEsqBaixoJ = Number(j)
@@ -287,18 +282,23 @@ let currentStatus
         }
         return contSeguidas
     }
-
     function teveVencedor(player) {
-
+        let msgVencedor = 'Parabéns, você ganhou!'
+        let quemComecaAProxima = 0 // seta o perdedor como próximo a começar
+        
         if  (player =='npc') {
             alteraStatus(3)
+            msgVencedor = 'Você perdeu.'
         }
         else {
             alteraStatus(2)
+            quemComecaAProxima = 1
         }
-        setTimeout(alert, 1000, 'Outra Partida?')
+        if (confirm(msgVencedor + ' Deseja jogar outra partida?')){
+            setTimeout(reiniciarPartida, 2000, quemComecaAProxima)
+        }
+        
     }
-    
     function zzzConfereGanhador (posJ, posI, player) {
         
         if (confVerticalPraBaixo(posJ, posI, player) >= 4 ) {
