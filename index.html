@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Connect four</title>
     <link rel="stylesheet" href="style.css">
-
 </head>
+
 <body onload="reiniciarPartida()">
     <h1>Connect Four</h1>
     <main>
@@ -20,14 +20,10 @@
             <p id="status">
                 Clique no botão correspondente a coluna que deseja jogar!
             </p>
-
-
             <!-- Linha 6 -  
             Botões relativos a ação do jogador soltar a bola na coluna correspondente;
             'onclick' chama a função de coluna correspondente e passa a informação que da coluna correspondente (param1), seta a linha 6(ultima) como destino padrão (param2) e  informa que o player 1 ('p1' - param3)  que efetuou a jogada
             -->
-
-           
             <div class="linha">
                 <input class="bJogar" type="button" value="Coluna 1" onclick="col('0','5','p1')">
                 <input class="bJogar" type="button" value="Coluna 2" onclick="col('1','5','p1')">

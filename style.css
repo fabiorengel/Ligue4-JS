@@ -24,6 +24,7 @@ h1 {
     text-align: center;
     
 }
+
 main {
     margin: auto;
     background-color: var(--cor6);
@@ -47,7 +48,6 @@ main {
     padding-top: 25px;
     //padding-bottom: 0px;
 }
-
 
 .linha {
     width: 100%;
@@ -78,26 +78,3 @@ main {
     border-radius: 50%;
     padding-bottom: 0px;    
 }
-
-
-/*div.quadrado {
-display: inline;
-border: 25px solid rgb(0, 0, 0);
-padding-bottom: 0px;
-}
-*/
-/*
-span.blue {
-    border: 30px solid rgb(0, 0, 255);
-}
-
-span.amarelo{
-    border: 30px solid rgba(255, 255, 0);
-}
-
-    ody {
-    border-color: rgb(126, 49, 49);
-    height: 30px;
-    width: 30px;    
-    border-width: 50px;
-} */

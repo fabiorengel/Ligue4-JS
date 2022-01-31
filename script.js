@@ -23,10 +23,10 @@ let corVazia =  '#ce8e68'
             setTimeout(vaiComputador, 1000) // chama o NPC após X milisegundos
         }
         else if (s==2) {
-            statusJogo.innerText = 'Parabéns, você ganhou!'
+            statusJogo.innerHTML = 'Parabéns, você ganhou! <input " type="button" value="Reiniciar!" onclick="reiniciarPartida(1)">'
         }
         else if (s==3) {
-            statusJogo.innerText = 'Computador ganhou. Mais sorte na próxima vez!'
+            statusJogo.innerHTML = 'Computador ganhou. Mais sorte na próxima vez! <input " type="button" value="Reiniciar!" onclick="reiniciarPartida(0)">'
         }    
         else {
             statusJogo.innerText = 'Sua vez...'
@@ -284,21 +284,12 @@ let corVazia =  '#ce8e68'
         return contSeguidas
     }
     function teveVencedor(player) {
-        let msgVencedor = 'Parabéns, você ganhou!'
-        let quemComecaAProxima = 0 // seta o perdedor como próximo a começar
-        
         if  (player =='npc') {
             alteraStatus(3)
-            msgVencedor = 'Você perdeu.'
         }
         else {
             alteraStatus(2)
-            quemComecaAProxima = 1
         }
-        if (confirm(msgVencedor + ' Deseja jogar outra partida?')){
-            setTimeout(reiniciarPartida, 2000, quemComecaAProxima)
-        }
-        
     }
     function zzzConfereGanhador (posJ, posI, player) {
         
@@ -316,3 +307,4 @@ let corVazia =  '#ce8e68'
         } 
         
     }
+  
