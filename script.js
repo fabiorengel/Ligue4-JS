@@ -1,50 +1,50 @@
-let bolas = document.getElementsByClassName('bola')
-let statusJogo = document.getElementById('status')
+let bolas = document.getElementsByClassName('bola') // class que ao mudar seu background-color simula uma bola de sue jogador na casa apropriada
+let statusJogo = document.getElementById('status') // elemento que mostra o Status do jogo (de quem é a vez, quem ganhou, etc.)
 let mT     
 /*matrix Tabuleiro = representa 7 colunas // 6 linhas de jogadas - inicializada em reiniciarPartida*/
 let currentStatus   
 
-/*  currentStatus: Armazena o estado atual do jogo:
+/*  currentStatus: Variável que armazena o estado atual do jogo:
     0 = Vez no Player 1
     1 = Vez do NPC / Player 2
     2 = Partida Terminada = Player 1 Ganhou
     3 = Partida Terminada = NPC / Player 2 Ganhou 
-    inicializada em reiniciarPartida
+    esta variável é inicializada em reiniciarPartida
 */
 
     function alteraStatus(s) {
         currentStatus = s
         if (s==1) {
             statusJogo.innerText = 'Vez do computador jogar...'
-            setTimeout(vaiComputador, 100) // chama o NPC
+            setTimeout(vaiComputador, 1000) // chama o NPC após X milisegundos
         }
         else if (s==2) {
-            statusJogo.innerText = 'Quem diria? Você ganhou!'
+            statusJogo.innerText = 'Parabéns, você ganhou!'
         }
         else if (s==3) {
-            statusJogo.innerText = 'Achou que podia me ganhar, né? Achou errado!'
+            statusJogo.innerText = 'O computador ganhou. Mais sorte na próxima vez!'
         }
         else {
-            statusJogo.innerText = 'Jogue, abestado!'
+            statusJogo.innerText = 'Sua vez...'
         }
     }
 
     function casaLivre(j,i) {
         /* Dada a coluna de "lançamento" j e uma linha default (normalmente a ultima (5)), verifica de baixo pra cima a primeira linha disponivel para jogada. Se houver linha diponível, retorna true e a linha, senão, retorna false.   */
-        while (mT[j][i] != 0 && i > 0) {
-            i--
+        while (mT[j][i] != 0 && i > 0) { //enquanto a casa não estiver vazia e ainda houver linha: suba uma casa
+            i-- 
         } 
-        if (mT[j][i] != 0) {
+        if (mT[j][i] != 0) { // Acabaram-se as linhas sme casa disponível , retorne falso!
             return [false]
         }
-        else {
+        else { // senão significa que o while parou por haver casa disponvel, retorne [verdade e a linha]
             return [true, i]
         }
     }
 
     function col(j, i, player) { 
         // Função chamada pela jogada de Player1 - Button por enquanto
-        if (currentStatus == 0) { // confere a vez do jogador
+        if (currentStatus == 0) { // confere se é a vez do jogador
             let cLivre = casaLivre(j, i) // Passa a coluna escolhida e a ultima linha (5) que são recebidos por parametro do HTML e retornam [true a primeira linha dispinivel] para jogada na mesma coluna. Caso não tenha, recebe false.
             if (cLivre[0]) { // Verifica tinha casa disponivel procede com a jogada
                 // Daqui
@@ -61,7 +61,7 @@ let currentStatus
             }
         }
         else if (currentStatus == 1) {
-            statusJogo.innerText = 'Espere a sua vez, parça'
+            statusJogo.innerHTML = `<strong> É a vez do computador. Espere!</strong>`
         }        
     }    
 
