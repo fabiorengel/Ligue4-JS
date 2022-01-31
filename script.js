@@ -23,10 +23,12 @@ let corVazia =  '#ce8e68'
             setTimeout(vaiComputador, 1000) // chama o NPC após X milisegundos
         }
         else if (s==2) {
-            statusJogo.innerHTML = 'Parabéns, você ganhou! <input " type="button" value="Reiniciar!" onclick="reiniciarPartida(1)">'
+            statusJogo.innerHTML = 'Parabéns, você ganhou! <input " type="button" value="Reiniciar!" onclick="reiniciarPartida(1)"> '
+            statusJogo.style.border = `3px solid ${corP1}`
         }
         else if (s==3) {
             statusJogo.innerHTML = 'Computador ganhou. Mais sorte na próxima vez! <input " type="button" value="Reiniciar!" onclick="reiniciarPartida(0)">'
+            statusJogo.style.border = `3px solid ${corNPC}`
         }    
         else {
             statusJogo.innerText = 'Sua vez...'
