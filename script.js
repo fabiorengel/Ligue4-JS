@@ -5,7 +5,8 @@ let mT
 let currentStatus 
 let corP1 = 'yellow' 
 let corNPC = 'red' 
-let corVazia = 'rgba(1, 0, 0, 0.550)'
+let corVazia =  '#ce8e68' 
+
 
 /*  currentStatus: Variável que armazena o estado atual do jogo:
     0 = Vez no Player 1
@@ -227,7 +228,7 @@ let corVazia = 'rgba(1, 0, 0, 0.550)'
         let auxEsqCimaJ = Number(j)
         let auxEsqCimaI = Number(i)
         let auxDirBaixoJ = Number(j)
-        let auxDirAltoI = Number(i)
+        let auxDirBaixoI = Number(i)
 
         while (auxEsqCimaJ > 0 && auxEsqCimaI > 0) {
             if (mT[auxEsqCimaJ-1][auxEsqCimaI-1] == player) { 
@@ -240,11 +241,11 @@ let corVazia = 'rgba(1, 0, 0, 0.550)'
             }
         }
 
-        while (auxDirBaixoJ < 6 && auxDirAltoI < 5  ) {
-            if (mT[auxDirBaixoJ+1][auxDirAltoI+1] == player) { 
-                contSeguidas+
+        while (auxDirBaixoJ < 6 && auxDirBaixoI < 5  ) {
+            if (mT[auxDirBaixoJ+1][auxDirBaixoI+1] == player) { 
+                contSeguidas++
                 auxDirBaixoJ++
-                auxDirAltoI++
+                auxDirBaixoI++
             }
             else {
                 auxDirBaixoJ = 6 // quebra o laço se não houver mais seguidas na diagonal direita inferior
@@ -255,29 +256,29 @@ let corVazia = 'rgba(1, 0, 0, 0.550)'
     function confDiagonalCrescente(j, i, player) { 
         let contSeguidas = 1
         let auxEsqBaixoJ = Number(j)
-        let auxEsqAltoI = Number(i)
+        let auxEsqBaixoI = Number(i)
         let auxDirAltoJ = Number(j)
         let auxDirAltoI = Number(i)
 
-        while (auxEsqBaixoJ > 0 && auxEsqAltoI < 5) {
-            if (mT[auxEsqBaixoJ-1][auxEsqAltoI+1] == player) { 
+        while (auxEsqBaixoJ > 0 && auxEsqBaixoI < 5) {
+            if (mT[auxEsqBaixoJ-1][auxEsqBaixoI+1] == player) { 
                 contSeguidas++
                 auxEsqBaixoJ--
-                auxEsqAltoI++
+                auxEsqBaixoI++
             }
             else {
                 auxEsqBaixoJ = 0 // quebra o laço se não houver mais seguidas na esquerda inferior
             }
         }
 
-        while (auxDirAltoJ < 5 && auxDirAltoI < 0) {
+        while (auxDirAltoJ < 6 && auxDirAltoI > 0) {
             if (mT[auxDirAltoJ+1][auxDirAltoI-1] == player) { 
                 contSeguidas++
                 auxDirAltoJ++
                 auxDirAltoI--
             }
             else {
-                auxDirAltoJ = 5 //quebra o laço se não houver mais seguidas na diagonal direita superior.
+                auxDirAltoJ = 6 //quebra o laço se não houver mais seguidas na diagonal direita superior.
             }
         }
         return contSeguidas

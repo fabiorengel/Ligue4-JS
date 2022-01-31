@@ -5,7 +5,8 @@
     --cor5: rgb(255, 92, 80);
     --cor6: rgba(211, 137, 114, 0.829);
     --cor7: black; // cor do tabuleiro
-}
+    
+ }
 
 * {
         margin: 0px;
