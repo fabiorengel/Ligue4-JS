@@ -12,50 +12,47 @@ let currentStatus
     inicializada em reiniciarPartida
 */
 
-    function alteraStatus(x) {
-        currentStatus = x
-        if (x==1) {
+    function alteraStatus(s) {
+        currentStatus = s
+        if (s==1) {
             statusJogo.innerText = 'Vez do computador jogar...'
             setTimeout(vaiComputador, 100) // chama o NPC
         }
-        else if (x==2) {
+        else if (s==2) {
             statusJogo.innerText = 'Quem diria? Você ganhou!'
         }
-        else if (x==3) {
+        else if (s==3) {
             statusJogo.innerText = 'Achou que podia me ganhar, né? Achou errado!'
         }
         else {
-            statusJogo.innerText = 'jogue, abestado!'
+            statusJogo.innerText = 'Jogue, abestado!'
         }
     }
 
-    function casaLivre(x,y) {
-        /* Dada a coluna de "lançamento", verifica a primeira linha, de baixo pra cima, disponivel para jogada, Se houver linha diponível, retorna true e a linha, senão, retorna false.   */
-        while (mT[x][y] != 0 && y > 0) {
-            y--
+    function casaLivre(j,i) {
+        /* Dada a coluna de "lançamento" j e uma linha default (normalmente a ultima (5)), verifica de baixo pra cima a primeira linha disponivel para jogada. Se houver linha diponível, retorna true e a linha, senão, retorna false.   */
+        while (mT[j][i] != 0 && i > 0) {
+            i--
         } 
-        if (mT[x][y] != 0) {
+        if (mT[j][i] != 0) {
             return [false]
         }
         else {
-            return [true, y]
+            return [true, i]
         }
     }
 
-    function col(x, y, player) { 
+    function col(j, i, player) { 
         // Função chamada pela jogada de Player1 - Button por enquanto
-        if (currentStatus == 0) {
-            let cLivre = casaLivre(x,y) 
-            if (cLivre[0]) {
+        if (currentStatus == 0) { // confere a vez do jogador
+            let cLivre = casaLivre(j, i) // Passa a coluna escolhida e a ultima linha (5) que são recebidos por parametro do HTML e retornam [true a primeira linha dispinivel] para jogada na mesma coluna. Caso não tenha, recebe false.
+            if (cLivre[0]) { // Verifica tinha casa disponivel procede com a jogada
                 // Daqui
-                    let posVetor = Number(x)+Number(cLivre[1])*7 //
-                    bolas[posVetor].style.backgroundColor = 'yellow'
+                    efetuaJogada(j , cLivre[1], player)
                 // até aqui, o código altera a cor da bola equivalente, trasformando a matriz 6x7 em um vetor de 42 posições. (div.bola 0a41)
+                zzzConfereGanhador(j, cLivre[1], player)
 
-                mT[x][cLivre[1]] = player //Salva na matriz a posição que a nova bola ocupa.
-                zzzConfereGanhador(x, cLivre[1], player)
-
-                if (currentStatus==0){                
+                if (currentStatus == 0){                
                     alteraStatus(1) // Função que muda status do jogo (desde a vez de qual jogador até o termino da partida)
                 }
             }
@@ -84,193 +81,237 @@ let currentStatus
         currentStatus = 0  
     }
 
-    function vaiComputador() {
-        // Jogada do computador.
-        let aux = true
-        let aux2
-        let x = 0
-
-        while  (x < 7 && aux) { 
-        /*Procura e todo tabuleiro, a partir da coluna 0 (primeira à esquerda), uma casa livre para jogar. */
-            aux2 = casaLivre(x,5) 
-            if (aux2[0]) {
-                aux=false
-            }
-            else {
-                x++   
-            }      
-        }
-
-        if (!aux) 
-        // if termporario para parar o programa quando a matriz estiver cheia. No futuro não será necessário
-            { 
-                //Daqui
-                let posVetor = Number(x)+Number(aux2[1])*7 
-                bolas[posVetor].style.backgroundColor = 'red'
-                // até aqui, o código altera a cor da bola equivalente, trasformando a matriz 6x7 em um vetor de 42 posições. (div.bola 0a41)
-                mT[x][aux2[1]] = 'npc'
-                
-                zzzConfereGanhador(x,aux2[1],'npc')
-                if (currentStatus == 1){ 
-                    alteraStatus(0)
+    function seGanhasePerde() {
+        let jGanha = 0
+        let jogadaJ = 0
+        let jogadaI = 0
+        let aux = false
+        while (jGanha < 7 ) { // Este while verifica se o computador ganha com alguma jogada nesta rodada = retornando [verdade, culuna a jogar]
+            let recebeCasaLivre = casaLivre(jGanha,5)
+            if (recebeCasaLivre[0]) {
+                let recebePonderarJogada = ponderarJogada(jGanha, recebeCasaLivre[1], 'npc')
+                if (recebePonderarJogada) {
+                    aux = true
+                    jogadaJ = Number(jGanha)
+                    jogadaI = Number(recebeCasaLivre[1])
+                    jGanha = 7
                 }
             }
+            jGanha++
         }
+        if (!aux) { //não havendo jogadas de vitória nesta rodada, o computador verifica se deve ocupar alguma casa que permitiria o adversário ganhar na próxima jogada escolhendo a primeira disponível e retornando [verdade, culuna a jogar]
+            let jNaoPerde = 0
+            while (jNaoPerde < 7 ) { 
+                let recebeCasaLivre = casaLivre(jNaoPerde,5)
+                if (recebeCasaLivre[0]) {
+                    let recebePonderarJogada = ponderarJogada(jNaoPerde, recebeCasaLivre[1], 'p1')
+                    if (recebePonderarJogada) {
+                        aux = true
+                        jogadaJ = Number(jNaoPerde)
+                        jogadaI = Number(recebeCasaLivre[1])
+                        jNaoPerde = 7
+                    }
+                }
+                jNaoPerde++
+            }
+        }
+        return [aux, jogadaJ, jogadaI]
+    }
+    
+    function ponderarJogada(j, i, player) {
+        /*função que dada a coluna "j" e o jogador "player", que pode ser "p1 ou npc", verifica se há ou haveria vitoria com a jogada. */
+        if (confVerticalPraBaixo(j, i, player) >= 4 ) {
+            return true
+        }
+        else if (confHorizontal(j, i, player) >= 4 ) {
+            return true
+        }
+        else if (confDiagonalDecrescente(j, i, player) >=4 )  {
+            return true
+        } 
+        else if (confDiagonalCrescente(j, i, player) >=4 )  {
+            return true
+        }
+        else {
+            return false
+        }
+    }
+
+    function efetuaJogada(j, i, player) { 
+         
+         let posVetor = Number(j)+Number(i)*7 
+         mT[j][i] = player
+
+         if (player == 'npc') {
+            bolas[posVetor].style.backgroundColor = 'red'
+            if (currentStatus == 1) { 
+                alteraStatus(0)
+           }
+         }
+         else {
+            bolas[posVetor].style.backgroundColor = 'yellow'
+         }
+         // até aqui, o código altera a cor da bola equivalente, trasformando a matriz 6x7 em um vetor de 42 posições. (div.bola 0a41)
+
+         
+         zzzConfereGanhador(j, i, player)
+
+         
+    }
+
+
+    function vaiComputador() {  // Jogada do computador.
+        let j
+        let i 
+        let temJogada = seGanhasePerde()
+
+        if (temJogada[0]) {
+            j = temJogada[1]
+            i = temJogada[2]
+        }
+        else {
+            let auxJ = 0
+            while  (auxJ < 7) { 
+                /*Procura e todo tabuleiro, a partir da coluna 0 (primeira à esquerda), uma casa livre para jogar. */
+                    let auxI = casaLivre(auxJ,5) 
+                    if (auxI[0]) {
+                        i = Number(auxI[1])
+                        j = auxJ
+                        auxJ = 7 // quebra o 'while' quando achar a coluna disponivel
+                    }
+                    else {
+                        auxJ++   
+                    }      
+            }
+        }
+        efetuaJogada(j, i, 'npc')
+    }
         
-    function confVerticalPraBaixo(x,y) { 
+    function confVerticalPraBaixo(j, i, player) { 
         let contSeguidas = 1
-        auxBreak = true
-        while (y < 6 && auxBreak==true) {
-            if (mT[x][y] == mT[x][y+1]) { 
+        while (i < 6) {
+            if (mT[j][i+1] == player) { 
                 contSeguidas++
-                y++
+                i++
             }
             else{
-                auxBreak=false
+                i = 6 //Caso não haja 4 bolas iguais seguidas, sai do laço
             }
         }
         return contSeguidas
     }
-          
        
-    function confHorizontal(x,y) { 
+    function confHorizontal(j,i, player) { 
         let contSeguidas = 1
-        let auxBreakEsq = true
-        let auxBreakDir = true
-        let auxEsq = Number(x)
-        let auxDir = Number(x)
-        while (auxEsq > 0  && auxBreakEsq == true) {
-            if (mT[auxEsq][y] == mT[auxEsq-1][y]) { 
+        let auxEsq = Number(j)
+        let auxDir = Number(j)
+        while (auxEsq > 0) {
+            if (mT[auxEsq-1][i] ==  player) { 
                 contSeguidas++
                 auxEsq--
             }
             else {
-                auxBreakEsq=false
+                auxEsq = 0 // quebra o laço se não houver mais seguidas a esquerda;
             }
         }
-        while (auxDir < 6  && auxBreakDir == true) {
-            if (mT[auxDir][y] == mT[auxDir+1][y]) { 
+        while (auxDir < 6) {
+            if (mT[auxDir+1][i] == player) { 
                 contSeguidas++
                 auxDir++
             }
             else {
-                auxBreakDir=false
+                auxDir = 6 // quebra o laço se não houver mais seguidas a direita;
             }
         }
         return contSeguidas
     }
  
-    function confDiagonalDecrescente(x,y) { 
+    function confDiagonalDecrescente(j, i, player) { 
         let contSeguidas = 1
-        let auxBreakEsqCima = true
-        let auxBreakDirBaixo = true
-        let auxEsqCimaX = Number(x)
-        let auxEsqCimaY = Number(y)
-        let auxDirBaixoX = Number(x)
-        let auxDirAltoY = Number(y)
+        let auxEsqCimaJ = Number(j)
+        let auxEsqCimaI = Number(i)
+        let auxDirBaixoJ = Number(j)
+        let auxDirAltoI = Number(i)
 
-        while (auxEsqCimaX > 0 && auxEsqCimaY > 0  && auxBreakEsqCima == true) {
-            if (mT[auxEsqCimaX][auxEsqCimaY] == mT[auxEsqCimaX-1][auxEsqCimaY-1]) { 
+        while (auxEsqCimaJ > 0 && auxEsqCimaI > 0) {
+            if (mT[auxEsqCimaJ-1][auxEsqCimaI-1] == player) { 
                 contSeguidas++
-                auxEsqCimaX--
-                auxEsqCimaY--
+                auxEsqCimaJ--
+                auxEsqCimaI--
             }
             else {
-                auxBreakEsqCima=false
+                auxEsqCimaJ = 0 // quebra o laço se não houver mais seguidas na diagona esquerda superior
             }
         }
 
-        while (auxDirBaixoX < 6 && auxDirAltoY < 5  && auxBreakDirBaixo == true) {
-            if (mT[auxDirBaixoX][auxDirAltoY] == mT[auxDirBaixoX+1][auxDirAltoY+1]) { 
-                contSeguidas++
-                auxDirBaixoX++
-                auxDirAltoY++
+        while (auxDirBaixoJ < 6 && auxDirAltoI < 5  ) {
+            if (mT[auxDirBaixoJ+1][auxDirAltoI+1] == player) { 
+                contSeguidas+
+                auxDirBaixoJ++
+                auxDirAltoI++
             }
             else {
-                auxBreakDirBaixo = false
+                auxDirBaixoJ = 6 // quebra o laço se não houver mais seguidas na diagonal direita inferior
             }
         }
         return contSeguidas
     }
   
-    function confDiagonalCrescente(x,y) { 
+    function confDiagonalCrescente(j, i, player) { 
         let contSeguidas = 1
-        let auxBreakEsq = true
-        let auxBreakDir = true
-        let auxEsqBaixoX = Number(x)
-        let auxEsqAltoY = Number(y)
-        let auxDirAltoX = Number(x)
-        let auxDirAltoY = Number(y)
+        let auxEsqBaixoJ = Number(j)
+        let auxEsqAltoI = Number(i)
+        let auxDirAltoJ = Number(j)
+        let auxDirAltoI = Number(i)
 
-        while (auxEsqBaixoX > 0 && auxEsqAltoY < 5  && auxBreakEsq == true) {
-            if (mT[auxEsqBaixoX][auxEsqAltoY] == mT[auxEsqBaixoX-1][auxEsqAltoY+1]) { 
+        while (auxEsqBaixoJ > 0 && auxEsqAltoI < 5) {
+            if (mT[auxEsqBaixoJ-1][auxEsqAltoI+1] == player) { 
                 contSeguidas++
-                auxEsqBaixoX--
-                auxEsqAltoY++
+                auxEsqBaixoJ--
+                auxEsqAltoI++
             }
             else {
-                auxBreakEsq=false
+                auxEsqBaixoJ = 0 // quebra o laço se não houver mais seguidas na esquerda inferior
             }
         }
 
-        while (auxDirAltoX < 5 && auxDirAltoY < 0  && auxBreakDir == true) {
-            if (mT[auxDirAltoX][auxDirAltoY] == mT[auxDirAltoX+1][auxDirAltoY-1]) { 
+        while (auxDirAltoJ < 5 && auxDirAltoI < 0) {
+            if (mT[auxDirAltoJ+1][auxDirAltoI-1] == player) { 
                 contSeguidas++
-                auxDirAltoX++
-                auxDirAltoY--
+                auxDirAltoJ++
+                auxDirAltoI--
             }
             else {
-                auxBreakDir = false
+                auxDirAltoJ = 5 //quebra o laço se não houver mais seguidas na diagonal direita superior.
             }
         }
         return contSeguidas
     }
 
+    function teveVencedor(player) {
 
-
-
-    function zzzConfereGanhador (posX, posY, player) {
+        if  (player =='npc') {
+            alteraStatus(3)
+        }
+        else {
+            alteraStatus(2)
+        }
+        setTimeout(alert, 1000, 'Outra Partida?')
+    }
+    
+    function zzzConfereGanhador (posJ, posI, player) {
         
-        if (confVerticalPraBaixo(posX,posY) >= 4 ) {
-            if  (player =='npc') {
-                alteraStatus(3)
-            }
-            else {
-                alteraStatus(2)
-            }
-            setTimeout(alert, 1000, 'Outra Partida?')
+        if (confVerticalPraBaixo(posJ, posI, player) >= 4 ) {
+            teveVencedor(player)
         }
-        else if (confHorizontal(posX,posY) >= 4 ) {
-
-            if  (player =='npc') {
-                    alteraStatus(3)
-            }
-            else {
-                alteraStatus(2)
-            }
-            setTimeout(alert, 1000, 'Outra Partida?')
-            
+        else if (confHorizontal(posJ, posI, player) >= 4 ) {
+            teveVencedor(player)
         }
-        else if (confDiagonalDecrescente(posX,posY) >=4 )  {
-            if  (player =='npc') {
-                alteraStatus(3)
-            }
-            else {
-                alteraStatus(2)
-            }
-            setTimeout(alert, 1000, 'Outra Partida?')
+        else if (confDiagonalDecrescente(posJ, posI, player) >=4 )  {
+            teveVencedor(player)
         } 
-        else if (confDiagonalCrescente(posX,posY) >=4 )  {
-            if  (player =='npc') {
-                alteraStatus(3)
-            }
-            else {
-                alteraStatus(2)
-            }
-            setTimeout(alert, 1000, 'Outra Partida?')
+        else if (confDiagonalCrescente(posJ, posI, player) >=4 )  {
+            teveVencedor(player)
         } 
         
     }
-        
-        /*console.log(mT)
-        console.log(x,aux2[1],'npc')*/
