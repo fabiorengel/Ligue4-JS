@@ -1,20 +1,22 @@
 /************************************************************************************************
 *                                          IMPORTANTE                                           *
 *                                                                                               *
-* 1 - Falta verificação para término de partida sem vencedores!.                                *
+* 1 - Falta verificação para término de partida sem vencedores!. > Feito, mas não testado!      *
 * 2 - Computador jogar mais no meio.  > Done!                                                   *
-* 3 - Destacar jogada da vitória.                                                               *
+* 3 - Destacar jogada da vitória. > Logica feita, falta CSS                                     *
 *                                                                                               *
 *                                                                                               *
 ************************************************************************************************/
 
-
-let bolas = document.getElementsByClassName('bola') 
+let quadrados = document.getElementsByClassName('quadrado');
+let bolas = document.getElementsByClassName('bola');
 /* Class que ao mudar seu background-color simula uma bola de seu jogador na casa apropriada */
-let statusJogo = document.getElementById('status') 
+let statusJogo = document.getElementById('status');
 /* Elemento que mostra o Status do jogo (de quem é a vez, quem ganhou, etc.)*/
-let mT     
+let mT 
 /* Matriz tabuleiro = representa 7 colunas x 6 linhas de jogadas - inicializada em reiniciarPartida */
+let vetorGanhador = 0
+/*Vetor para destacar sequencia vitoriosa*/
 let currentStatus 
 /*  currentStatus: Variável global que armazena o estado atual do jogo:
     0 = Vez no Player 1
@@ -32,9 +34,15 @@ let currentStatus
         }
         else if (s==2) {
             statusJogo.innerHTML = 'Parabéns, você ganhou!'
+            for (let cont = vetorGanhador.length-1; cont >=0; cont--) {
+                quadrados[vetorGanhador[cont]].classList.add('testeP1')
+            }
         }
         else if (s==3) {
             statusJogo.innerHTML = 'O computador ganhou. Mais sorte na próxima vez!'
+            for (let cont = vetorGanhador.length-1; cont >=0; cont--) {
+                quadrados[vetorGanhador[cont]].classList.add('testeNPC');
+            }
         } 
         else if (s==4) {
             statusJogo.innerHTML = 'O jogo acabou sem vencedores!'
@@ -97,6 +105,8 @@ let currentStatus
         ]
         for (var cont = 0; cont < 42; cont++ ) {
             /* Laço que inicia, ou reinicia, o visual do tabuleiro */
+            quadrados[cont].classList.remove('testeNPC')
+            quadrados[cont].classList.remove('testeP1')
             bolas[cont].classList.remove('corNPC')
             bolas[cont].classList.remove('corP1')
             bolas[cont].classList.add('cor1') 
@@ -146,10 +156,12 @@ let currentStatus
     }
     function confVerticalPraBaixo(j, i, player) { 
         let contSeguidas = 1
+        vetorGanhador = [Number(j+i*7)]
         while (i < 6) {
             if (mT[j][i+1] == player) { 
                 contSeguidas++
                 i++
+                vetorGanhador.push([Number(j+i*7)]);
             }
             else{
                 i = 6 //Caso não haja 4 bolas iguais seguidas, sai do laço
@@ -158,28 +170,33 @@ let currentStatus
         return contSeguidas
     }
     function confHorizontal(j,i, player) { 
-        let contSeguidas = 1
-        let auxEsq = Number(j)
-        let auxDir = Number(j)
+        let contSeguidas = 1;
+        let auxEsq = Number(j);
+        let auxDir = Number(j);
+        vetorGanhador = [Number(j+i*7)];
         while (auxEsq > 0) {
             if (mT[auxEsq-1][i] ==  player) { 
-                contSeguidas++
-                auxEsq--
+                contSeguidas++;
+                auxEsq--;
+                vetorGanhador.push([Number(auxEsq+i*7)]);
             }
             else {
-                auxEsq = 0 // quebra o laço se não houver mais seguidas a esquerda;
+                break;
+                //auxEsq = 0 // quebra o laço se não houver mais seguidas a esquerda;
             }
         }
         while (auxDir < 6) {
             if (mT[auxDir+1][i] == player) { 
-                contSeguidas++
-                auxDir++
+                contSeguidas++;
+                auxDir++;
+                vetorGanhador.push([Number(auxDir+i*7)])
             }
             else {
-                auxDir = 6 // quebra o laço se não houver mais seguidas a direita;
+                break;
+                //auxDir = 6 // quebra o laço se não houver mais seguidas a direita;
             }
         }
-        return contSeguidas
+        return contSeguidas;
     }
     function confDiagonalDecrescente(j, i, player) { 
         let contSeguidas = 1
@@ -187,15 +204,17 @@ let currentStatus
         let auxEsqCimaI = Number(i)
         let auxDirBaixoJ = Number(j)
         let auxDirBaixoI = Number(i)
+        vetorGanhador = [Number(j+i*7)]
         
         while (auxEsqCimaJ > 0 && auxEsqCimaI > 0) {
             if (mT[auxEsqCimaJ-1][auxEsqCimaI-1] == player) { 
                 contSeguidas++
                 auxEsqCimaJ--
                 auxEsqCimaI--
+                vetorGanhador.push([Number(auxEsqCimaJ+auxEsqCimaI*7)])
             }
             else {
-                auxEsqCimaJ = 0 // quebra o laço se não houver mais seguidas na diagona esquerda superior
+                auxEsqCimaJ = 0; // quebra o laço se não houver mais seguidas na diagona esquerda superior
             }
         }
         
@@ -204,6 +223,7 @@ let currentStatus
                 contSeguidas++
                 auxDirBaixoJ++
                 auxDirBaixoI++
+                vetorGanhador.push([Number(auxDirBaixoJ+auxDirBaixoI*7)])
             }
             else {
                 auxDirBaixoJ = 6 // quebra o laço se não houver mais seguidas na diagonal direita inferior
@@ -217,12 +237,14 @@ let currentStatus
         let auxEsqBaixoI = Number(i)
         let auxDirAltoJ = Number(j)
         let auxDirAltoI = Number(i)
+        vetorGanhador = [Number(j+i*7)]
         
         while (auxEsqBaixoJ > 0 && auxEsqBaixoI < 5) {
             if (mT[auxEsqBaixoJ-1][auxEsqBaixoI+1] == player) { 
                 contSeguidas++
                 auxEsqBaixoJ--
                 auxEsqBaixoI++
+                vetorGanhador.push([Number(auxEsqBaixoJ+auxEsqBaixoI*7)])
             }
             else {
                 auxEsqBaixoJ = 0 // quebra o laço se não houver mais seguidas na esquerda inferior
@@ -234,6 +256,7 @@ let currentStatus
                 contSeguidas++
                 auxDirAltoJ++
                 auxDirAltoI--
+                vetorGanhador.push([Number(auxDirAltoJ+auxDirAltoI*7)])
             }
             else {
                 auxDirAltoJ = 6 //quebra o laço se não houver mais seguidas na diagonal direita superior.

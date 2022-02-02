@@ -176,3 +176,6 @@ h1 {
 .cor1 {
     background-color: var(--cor1);
 }
+.testeNPC {
+    border: 1px solid var(--corNPC);
+}
