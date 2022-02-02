@@ -33,13 +33,13 @@ let currentStatus
             setTimeout(inteligenciaComputador, 1200) // chama o NPC após X milisegundos
         }
         else if (s==2) {
-            statusJogo.innerHTML = 'Parabéns, você ganhou!'
+            statusJogo.innerHTML = 'Parabéns, você ganhou!';
             for (let cont = vetorGanhador.length-1; cont >=0; cont--) {
-                quadrados[vetorGanhador[cont]].classList.add('testeP1')
+                quadrados[vetorGanhador[cont]].classList.add('testeP1');
             }
         }
         else if (s==3) {
-            statusJogo.innerHTML = 'O computador ganhou. Mais sorte na próxima vez!'
+            statusJogo.innerHTML = 'O computador ganhou. Mais sorte na próxima vez!';
             for (let cont = vetorGanhador.length-1; cont >=0; cont--) {
                 quadrados[vetorGanhador[cont]].classList.add('testeNPC');
             }

@@ -179,3 +179,6 @@ h1 {
 .testeNPC {
     border: 1px solid var(--corNPC);
 }
+.testeP1 {
+    border: 1px solid var(--corP1);
+}
