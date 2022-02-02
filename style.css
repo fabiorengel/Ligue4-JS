@@ -1,16 +1,24 @@
 @charset "UTF-8";
 
 :root {
-    --cor1: coral;
-    --cor5: rgb(255, 92, 80);
+    --cor1: #BB9457;
+    --cor1Opaca: #bb955746;
+    --cor2: black;
+    --cor2Opaca: rgba(0, 0, 0, 0.350);
+    --cor3: rgb(0, 180, 0);
+    --cor3Opaca: rgba(0, 180, 0, 0.472);
+    --cor4: rgb(56, 54, 54);
+    --cor5: #99582A;
     --cor6: rgba(211, 137, 114, 0.829);
-    --cor7: black; // cor do tabuleiro
-    
+    --corP1: #FFE6A7;
+    --corNPC: #6F1D1B ;
  }
 
 * {
-        margin: 0px;
-        padding: 0px;
+    margin: 0px;
+    padding: 0px;
+    font-family: 'Courier New', Courier, monospace;
+    border-radius: 1% 1% 1% 1%;
 }
 
 body {
@@ -18,55 +26,133 @@ body {
     padding: 20px;
 }
 
-h1 { 
-    background-color: var(--cor5);
-    border: 5px solid black;
-    text-align: center;
-    
-}
-
 main {
     margin: auto;
-    background-color: var(--cor6);
     border: 5px solid black;
-}
-
-#status {
-    padding-bottom: 2em;
-    color:beige;
-}
-
-#tabuleiro {
-    background-color: var(--cor7);
-    max-height: 600px;
+    max-height: 700px;
     max-width: 700px;
     min-height: 251px;
     min-width: 294px;
+    padding: 5px;
+    background-color: var(--cor1);
+    box-shadow: 0 0  2px black;
+}
+header {
+    border: 5px solid black;
+    padding: 2px;
+    background-color: var(--cor1);
+    box-shadow: inset 0 0 500px var(--cor2Opaca);
+    border-radius: 1% 1% 0% 0%;
+    /*background-image: radial-gradient(orange, var(--cor1));*/
+}
+
+h1 { 
+    padding: 10px 0;
+    text-shadow: 2px 2px 1px var(--cor2Opaca);
+    text-align: center;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 2.5em;
+}
+
+#menu {
+    border: 1px solid black;
+    padding: 0.2em 0 0.2em 0.1em ;
+}
+
+.listaMenu {
+    text-align: center;
+    display: inline;
+    width: 15%;
+    background-color: rgba(0, 0, 0, 0.144);
+}
+
+.listaMenu:hover {
+    color: white;
+}
+
+#novaPartida:hover {
+    text-decoration: underline;
+}
+
+#comoJogar:hover #comoJogarHover {
+    display: block;
+}
+
+#comoJogarHover {
+    padding: 10px;
+    border-radius: 5%;
+    position: absolute;
+    display: none;
+    height: 300px;
+    width: 300px;
+    border: 2px solid black;
+    background-color: white;
+    color: black;
+}
+
+#sobre:hover #sobreHover {
+    display: block;
+}
+#sobreHover {
+    padding: 10px;
+    border-radius: 5%;
+    position: absolute;
+    display: none;
+    height: 300px;
+    width: 300px;
+    border: 2px solid black;
+    background-color: white;
+    color: black;
+}
+
+#status {
+    margin-bottom: 15px;
+    border-radius: 0%;
+    border: 1px solid var(--cor1);
+    box-shadow: inset 0 0 100px var(--cor1Opaca);
+    background-color: var(--cor2);
+    color: var(--cor3);
+    font-size: 1.3em;
+    text-indent: 10pt;
+    text-shadow: 1px 1px 1px var(--cor3Opaca);    
+}
+
+#tabuleiro {
+    background-color: var(--cor2);
     margin: auto;
-    border: 2px solid var(--cor7);
-    border-top: 0px;
-    padding-top: 25px;
-    //padding-bottom: 0px;
+    padding: 15px 5px 5px 5px;
+    border-top-left-radius: 0%;
+    border-top-right-radius: 0%;
 }
 
 .linha {
     width: 100%;
-    //height: 64px;
-    background: var(--cor7);
+    background: var(--cor2);
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly/*space-between;*/
 }
 
 .bJogar {
     display: block;
+    text-shadow: 3px 3px 3px var(--cor2Opaca);
     width: 13%;
-    }
+    height: 64px;
+    font-size: 3em;
+    border-radius: 50%;
+    padding-bottom: 1.4em;
+    background-image: radial-gradient(circle at center, var(--cor1), black );
+}
+
+.bJogar:hover {
+    background-image: radial-gradient(circle at center, var(--corP1), black );
+}
 
 .quadrado {
     display: block;
     width: 13%;
     height: 64px;
-    background-color: var(--cor7);
+    background-color: var(--cor2);
+    
     
 }
 
@@ -77,4 +163,16 @@ main {
     background-color: var(--cor6);
     border-radius: 50%;
     padding-bottom: 0px;    
+}
+
+.corNPC {
+    background-color: var(--corNPC);
+}
+
+.corP1 {
+    background-color: var(--corP1);
+}
+
+.cor1 {
+    background-color: var(--cor1);
 }

@@ -1,14 +1,22 @@
-let bolas = document.getElementsByClassName('bola') // class que ao mudar seu background-color simula uma bola de sue jogador na casa apropriada
-let statusJogo = document.getElementById('status') // elemento que mostra o Status do jogo (de quem é a vez, quem ganhou, etc.)
+/************************************************************************************************
+*                                          IMPORTANTE                                           *
+*                                                                                               *
+* 1 - Falta verificação para término de partida sem vencedores!.                                *
+* 2 - Computador jogar mais no meio.                                                            *
+* 3 - Destacar jogada da vitória.                                                               *
+*                                                                                               *
+*                                                                                               *
+************************************************************************************************/
+
+
+let bolas = document.getElementsByClassName('bola') 
+/* Class que ao mudar seu background-color simula uma bola de seu jogador na casa apropriada */
+let statusJogo = document.getElementById('status') 
+/* Elemento que mostra o Status do jogo (de quem é a vez, quem ganhou, etc.)*/
 let mT     
-/*matrix Tabuleiro = representa 7 colunas // 6 linhas de jogadas - inicializada em reiniciarPartida*/
+/* Matriz tabuleiro = representa 7 colunas x 6 linhas de jogadas - inicializada em reiniciarPartida */
 let currentStatus 
-let corP1 = 'yellow' 
-let corNPC = 'red' 
-let corVazia =  '#ce8e68' 
-
-
-/*  currentStatus: Variável que armazena o estado atual do jogo:
+/*  currentStatus: Variável global que armazena o estado atual do jogo:
     0 = Vez no Player 1
     1 = Vez do NPC / Player 2
     2 = Partida Terminada = Player 1 Ganhou
@@ -19,56 +27,65 @@ let corVazia =  '#ce8e68'
     function alteraStatus(s) {
         currentStatus = s
         if (s==1) {
-            statusJogo.innerText = 'Vez do computador jogar...'
-            setTimeout(vaiComputador, 1000) // chama o NPC após X milisegundos
+            statusJogo.innerText = 'É a vez do computador jogar...'
+            setTimeout(vaiComputador, 1200) // chama o NPC após X milisegundos
         }
         else if (s==2) {
-            statusJogo.innerHTML = 'Parabéns, você ganhou! <input " type="button" value="Reiniciar!" onclick="reiniciarPartida(1)"> '
-            statusJogo.style.border = `3px solid ${corP1}`
+            statusJogo.innerHTML = 'Parabéns, você ganhou!'
         }
         else if (s==3) {
-            statusJogo.innerHTML = 'Computador ganhou. Mais sorte na próxima vez! <input " type="button" value="Reiniciar!" onclick="reiniciarPartida(0)">'
-            statusJogo.style.border = `3px solid ${corNPC}`
+            statusJogo.innerHTML = 'O computador ganhou. Mais sorte na próxima vez!'
         }    
         else {
-            statusJogo.innerText = 'Sua vez...'
+            statusJogo.innerText = 'Sua vez de jogar...'
         }
     }
-    function casaLivre(j,i) {
+
+    function casaLivreColunaJ(j) { /* Função na versão final*/
         /* Dada a coluna de "lançamento" j e uma linha default (normalmente a ultima (5)), verifica de baixo pra cima a primeira linha disponivel para jogada. Se houver linha diponível, retorna true e a linha, senão, retorna false.   */
-        while (mT[j][i] != 0 && i > 0) { //enquanto a casa não estiver vazia e ainda houver linha: suba uma casa
-            i-- 
+        let i = 5;
+        while (mT[j][i] != 0 && i > 0) { 
+            i--; 
+            // Enquanto a casa não estiver vazia e ainda houver linha: suba uma casa
         } 
-        if (mT[j][i] != 0) { // Acabaram-se as linhas sme casa disponível , retorne falso!
-            return [false]
+        if (mT[j][i] != 0) { 
+            return [false];
+            // Se: Acabaram-se as linhas sem casa disponível , retorne falso!
         }
-        else { // senão significa que o while parou por haver casa disponvel, retorne [verdade e a linha]
-            return [true, i]
+        else { 
+            return [true, i];
+            // Senão: significa que o while parou por haver casa disponvel, retorne [verdade e a linha]
         }
     }
-    function col(j, i, player) { 
+
+    function jogadaPlayer1(j, player) { 
         // Função chamada pela jogada de Player1 - Button por enquanto
-        
         if (currentStatus == 0) { // confere se é a vez do jogador
-            let cLivre = casaLivre(j, i) // Passa a coluna escolhida e a ultima linha (5) que são recebidos por parametro do HTML e retornam [true a primeira linha dispinivel] para jogada na mesma coluna. Caso não tenha, recebe false.
-            if (cLivre[0]) { // Verifica tinha casa disponivel procede com a jogada
-                    efetuaJogada(j , cLivre[1], player)
-                if (currentStatus == 0){                
-                    alteraStatus(1) // Função que muda status do jogo (desde a vez de qual jogador até o termino da partida)
+            let cLivre = casaLivreColunaJ(j) 
+            /* Se houver casa disponivel na coluna J, cLivre recebe [true ; e a primeira casa (de baixo pra cima)]; senão recebe false */
+            if (cLivre[0]) { 
+                /* confere se havia casa disponivel para proceder com a jogada */ 
+                    efetuaJogada(j, cLivre[1], player)
+                if (currentStatus == 0) {                
+                    alteraStatus(1) 
+                    /* Formalidade que checa se houve mudança de status no jogo, o que aconteceria se a ultima jogada tiver gerado vencedor. Não tendo havido mudança, procede para passar a vez ao computador.*/ 
                 }
             }
             else {
-                alert('Jogada Inválida')
+                alert('Jogada Inválida - Coluna sem casas livres')
+                /* Acontece se o Player 1 tentar jogar numa coluna completa */
             }
         }
         else if (currentStatus == 1) {
             statusJogo.innerHTML = `<strong> É a vez do computador. Espere!</strong>`
+            /* Este else acontecerá caso o Player 1 tente jogar na vez do computador */
         }        
-    }    
+    } 
+
     function reiniciarPartida(quemComeca) {
         
-        mT =    //matrix Tabuleiro = representa 7 colunas // 6 linhas de jogadas
-        // Dá pra fazer por laço, mas não é interessante.
+        mT =    
+        /*matrix Tabuleiro = representa 7 colunas // 6 linhas de jogadas */
             [
             [0,0,0,0,0,0], // coluna 0 
             [0,0,0,0,0,0], // coluna 1 
@@ -79,22 +96,26 @@ let corVazia =  '#ce8e68'
             [0,0,0,0,0,0]  // coluna 6 
         ]
         for (var cont = 0; cont < 42; cont++ ) {
-            bolas[cont].style.backgroundColor = corVazia
+            /* Laço que inicia, ou reinicia, o visual do tabuleiro */
+            bolas[cont].classList.remove('corNPC')
+            bolas[cont].classList.remove('corP1')
+            bolas[cont].classList.add('cor1') 
         }
         if (quemComeca != 1) {
+        /* O perdedor começa jogando na próxima partida!!! */
             alteraStatus(0) 
         }
         else {
             alteraStatus(1) 
         } 
     }
-    function seGanhasePerde() {
+    function seGanhasePerde() { 
         let jGanha = 0
         let jogadaJ = 0
         let jogadaI = 0
         let aux = false
         while (jGanha < 7 ) { // Este while verifica se o computador ganha com alguma jogada nesta rodada = retornando [verdade, culuna a jogar]
-            let recebeCasaLivre = casaLivre(jGanha,5)
+            let recebeCasaLivre = casaLivreColunaJ(jGanha,5)
             if (recebeCasaLivre[0]) {
                 let recebePonderarJogada = ponderarJogada(jGanha, recebeCasaLivre[1], 'npc')
                 if (recebePonderarJogada) {
@@ -108,8 +129,8 @@ let corVazia =  '#ce8e68'
         }
         if (!aux) { //não havendo jogadas de vitória nesta rodada, o computador verifica se deve ocupar alguma casa que permitiria o adversário ganhar na próxima jogada escolhendo a primeira disponível e retornando [verdade, culuna a jogar]
             let jNaoPerde = 0
-            while (jNaoPerde < 7 ) { 
-                let recebeCasaLivre = casaLivre(jNaoPerde,5)
+            while (jNaoPerde < 7) { 
+                let recebeCasaLivre = casaLivreColunaJ(jNaoPerde,5)
                 if (recebeCasaLivre[0]) {
                     let recebePonderarJogada = ponderarJogada(jNaoPerde, recebeCasaLivre[1], 'p1')
                     if (recebePonderarJogada) {
@@ -142,24 +163,29 @@ let corVazia =  '#ce8e68'
             return false
         }
     }
+
     function efetuaJogada(j, i, player) { 
-         
-         let posVetor = Number(j)+Number(i)*7 
-         mT[j][i] = player
+        let posVetor = Number(j)+Number(i)*7 
+        /* poseVetor: usa a coluna ('j' de 0 a 6) e a linha ('i' de 0 a 5) recebidas por parâmetro calcula a posição equivalente no div.bolas, que é um vetor de 0 a 41 */
+         mT[j][i] = player 
+         /* salva o responsavel pela joga (p1 ou npc) na posição da matriz usada como (tabuleiro)*/
 
          if (player == 'npc') {
-             bolas[posVetor].style.backgroundColor = corNPC // altera a cor da bola equivalente, trasformando a matriz 6x7 em um vetor de 42 posições. (div.bola 0 a 41)
+            /*  Manipula a class do elemento div.bolas trocando a padrão pela class do Computador (o que na pratica muda a cor equivalente a jogada no browser*/
+            bolas[posVetor].classList.remove('cor1') 
+            bolas[posVetor].classList.add('corNPC')
             if (currentStatus == 1) { 
                 alteraStatus(0)
            }
          }
          else {
-            bolas[posVetor].style.backgroundColor = corP1 // IDEM ACIMA
+             /*  Manipula a class do elemento div.bolas trocando a padrão pela class do Player1 (o que na pratica muda a cor equivalente a jogada no browser*/
+            bolas[posVetor].classList.remove('cor1') 
+            bolas[posVetor].classList.add('corP1')
          }
-
-         
-         zzzConfereGanhador(j, i, player)
-
+        
+         confereSeTeveGanhadorNaJogada(j, i, player)
+         /* Função responsável por verificar se houve vencedor nesta jogada*/
          
     }
     function vaiComputador() {  // Jogada do computador.
@@ -175,7 +201,7 @@ let corVazia =  '#ce8e68'
             let auxJ = 0
             while  (auxJ < 7) { 
                 /*Procura e todo tabuleiro, a partir da coluna 0 (primeira à esquerda), uma casa livre para jogar. */
-                    let auxI = casaLivre(auxJ,5) 
+                    let auxI = casaLivreColunaJ(auxJ,5) 
                     if (auxI[0]) {
                         i = Number(auxI[1])
                         j = auxJ
@@ -293,7 +319,7 @@ let corVazia =  '#ce8e68'
             alteraStatus(2)
         }
     }
-    function zzzConfereGanhador (posJ, posI, player) {
+    function confereSeTeveGanhadorNaJogada (posJ, posI, player) {
         
         if (confVerticalPraBaixo(posJ, posI, player) >= 4 ) {
             teveVencedor(player)

@@ -8,9 +8,36 @@
     <link rel="stylesheet" href="style.css">
 </head>
 
-<body onload="reiniciarPartida()">
-    <h1>Connect Four</h1>
+<body onload='reiniciarPartida()'>
     <main>
+
+        <header>
+            <h1>Connect Four</h1>
+            <div id="menu">
+                <ul>
+                    <span>
+                        &lt;
+                        <li class="listaMenu" onclick='reiniciarPartida()' id="novaPartida">
+                            Nova partida</li>
+                        &gt; 
+                    </span>
+                    <span>
+                        &lt;
+                        <li class="listaMenu" id="comoJogar">
+                            Como jogar<p id="comoJogarHover">
+                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rem alias ratione et cum eum? Tempore nobis, quae corrupti quo veniam quis molestias cumque, alias repellendus sequi est, rerum laudantium reiciendis?
+                            </p></li>
+                        &gt; 
+                    </span>
+                    <span>&lt;
+                        <li class="listaMenu" id="sobre">Sobre<p id="sobreHover">
+                                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Expedita, voluptatem aliquid voluptates voluptatum sed minima, neque, nisi aut ipsa distinctio laudantium ratione accusamus fuga eveniet amet error illum magni libero!
+                            </p></li>
+                            &gt;
+                    </span>
+                </ul>
+            </div>
+        </header>
         
         <section id="tabuleiro">
             
@@ -25,13 +52,13 @@
             'onclick' chama a função de coluna correspondente e passa a informação que da coluna correspondente (param1), seta a linha 6(ultima) como destino padrão (param2) e  informa que o player 1 ('p1' - param3)  que efetuou a jogada
             -->
             <div class="linha">
-                <input class="bJogar" type="button" value="Coluna 1" onclick="col('0','5','p1')">
-                <input class="bJogar" type="button" value="Coluna 2" onclick="col('1','5','p1')">
-                <input class="bJogar" type="button" value="Coluna 3" onclick="col('2','5','p1')">
-                <input class="bJogar" type="button" value="Coluna 4" onclick="col('3','5','p1')">
-                <input class="bJogar" type="button" value="Coluna 5" onclick="col('4','5','p1')">
-                <input class="bJogar" type="button" value="Coluna 6" onclick="col('5','5','p1')">
-                <input class="bJogar" type="button" value="Coluna 7" onclick="col('6','5','p1')">
+                <input class="bJogar" type="button" value="&#11015" onclick="jogadaPlayer1('0','p1')">
+                <input class="bJogar" type="button" value="&#11015" onclick="jogadaPlayer1('1','p1')">
+                <input class="bJogar" type="button" value="&#11015" onclick="jogadaPlayer1('2','p1')">
+                <input class="bJogar" type="button" value="&#11015" onclick="jogadaPlayer1('3','p1')">
+                <input class="bJogar" type="button" value="&#11015" onclick="jogadaPlayer1('4','p1')">
+                <input class="bJogar" type="button" value="&#11015" onclick="jogadaPlayer1('5','p1')">
+                <input class="bJogar" type="button" value="&#11015" onclick="jogadaPlayer1('6','p1')">
             </div>
 
             <!-- Linha 5 -->
@@ -77,7 +104,6 @@
                 <div class="quadrado"><div class="bola"></div></div>
                 <div class="quadrado"><div class="bola"></div></div>
             </div>
-
         
             <!-- Linha 1 -->
             <div class="linha">
@@ -100,9 +126,10 @@
                 <div class="quadrado"><div class="bola"></div></div>
                 <div class="quadrado"><div class="bola"></div></div>
             </div>
-
         </section>
     </main>
+
     <script src="script.js"></script>
+
 </body>
 </html>
