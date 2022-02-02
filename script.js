@@ -2,7 +2,7 @@
 *                                          IMPORTANTE                                           *
 *                                                                                               *
 * 1 - Falta verificação para término de partida sem vencedores!.                                *
-* 2 - Computador jogar mais no meio.                                                            *
+* 2 - Computador jogar mais no meio.  > Done!                                                   *
 * 3 - Destacar jogada da vitória.                                                               *
 *                                                                                               *
 *                                                                                               *
@@ -28,19 +28,21 @@ let currentStatus
         currentStatus = s
         if (s==1) {
             statusJogo.innerText = 'É a vez do computador jogar...'
-            setTimeout(vaiComputador, 1200) // chama o NPC após X milisegundos
+            setTimeout(inteligenciaComputador, 1200) // chama o NPC após X milisegundos
         }
         else if (s==2) {
             statusJogo.innerHTML = 'Parabéns, você ganhou!'
         }
         else if (s==3) {
             statusJogo.innerHTML = 'O computador ganhou. Mais sorte na próxima vez!'
+        } 
+        else if (s==4) {
+            statusJogo.innerHTML = 'O jogo acabou sem vencedores!'
         }    
         else {
             statusJogo.innerText = 'Sua vez de jogar...'
         }
     }
-
     function casaLivreColunaJ(j) { /* Função na versão final*/
         /* Dada a coluna de "lançamento" j e uma linha default (normalmente a ultima (5)), verifica de baixo pra cima a primeira linha disponivel para jogada. Se houver linha diponível, retorna true e a linha, senão, retorna false.   */
         let i = 5;
@@ -49,7 +51,7 @@ let currentStatus
             // Enquanto a casa não estiver vazia e ainda houver linha: suba uma casa
         } 
         if (mT[j][i] != 0) { 
-            return [false];
+            return [false, -1];
             // Se: Acabaram-se as linhas sem casa disponível , retorne falso!
         }
         else { 
@@ -57,7 +59,6 @@ let currentStatus
             // Senão: significa que o while parou por haver casa disponvel, retorne [verdade e a linha]
         }
     }
-
     function jogadaPlayer1(j, player) { 
         // Função chamada pela jogada de Player1 - Button por enquanto
         if (currentStatus == 0) { // confere se é a vez do jogador
@@ -81,7 +82,6 @@ let currentStatus
             /* Este else acontecerá caso o Player 1 tente jogar na vez do computador */
         }        
     } 
-
     function reiniciarPartida(quemComeca) {
         
         mT =    
@@ -109,110 +109,40 @@ let currentStatus
             alteraStatus(1) 
         } 
     }
-    function seGanhasePerde() { 
-        let jGanha = 0
-        let jogadaJ = 0
-        let jogadaI = 0
-        let aux = false
-        while (jGanha < 7 ) { // Este while verifica se o computador ganha com alguma jogada nesta rodada = retornando [verdade, culuna a jogar]
-            let recebeCasaLivre = casaLivreColunaJ(jGanha,5)
-            if (recebeCasaLivre[0]) {
-                let recebePonderarJogada = ponderarJogada(jGanha, recebeCasaLivre[1], 'npc')
-                if (recebePonderarJogada) {
-                    aux = true
-                    jogadaJ = Number(jGanha)
-                    jogadaI = Number(recebeCasaLivre[1])
-                    jGanha = 7
-                }
-            }
-            jGanha++
-        }
-        if (!aux) { //não havendo jogadas de vitória nesta rodada, o computador verifica se deve ocupar alguma casa que permitiria o adversário ganhar na próxima jogada escolhendo a primeira disponível e retornando [verdade, culuna a jogar]
-            let jNaoPerde = 0
-            while (jNaoPerde < 7) { 
-                let recebeCasaLivre = casaLivreColunaJ(jNaoPerde,5)
-                if (recebeCasaLivre[0]) {
-                    let recebePonderarJogada = ponderarJogada(jNaoPerde, recebeCasaLivre[1], 'p1')
-                    if (recebePonderarJogada) {
-                        aux = true
-                        jogadaJ = Number(jNaoPerde)
-                        jogadaI = Number(recebeCasaLivre[1])
-                        jNaoPerde = 7
-                    }
-                }
-                jNaoPerde++
-            }
-        }
-        return [aux, jogadaJ, jogadaI]
-    }
-    function ponderarJogada(j, i, player) {
-        /*função que dada a coluna "j" e o jogador "player", que pode ser "p1 ou npc", verifica se há ou haveria vitoria com a jogada. */
-        if (confVerticalPraBaixo(j, i, player) >= 4 ) {
-            return true
-        }
-        else if (confHorizontal(j, i, player) >= 4 ) {
-            return true
-        }
-        else if (confDiagonalDecrescente(j, i, player) >=4 )  {
-            return true
-        } 
-        else if (confDiagonalCrescente(j, i, player) >=4 )  {
-            return true
-        }
-        else {
-            return false
-        }
-    }
-
     function efetuaJogada(j, i, player) { 
-        let posVetor = Number(j)+Number(i)*7 
+        let posVetor = Number(j)+Number(i)*7;
+        let naoAcabou = false; 
         /* poseVetor: usa a coluna ('j' de 0 a 6) e a linha ('i' de 0 a 5) recebidas por parâmetro calcula a posição equivalente no div.bolas, que é um vetor de 0 a 41 */
-         mT[j][i] = player 
-         /* salva o responsavel pela joga (p1 ou npc) na posição da matriz usada como (tabuleiro)*/
-
-         if (player == 'npc') {
+        mT[j][i] = player; 
+        /* salva o responsavel pela joga (p1 ou npc) na posição da matriz usada como (tabuleiro)*/
+        if (player == 'npc') {
             /*  Manipula a class do elemento div.bolas trocando a padrão pela class do Computador (o que na pratica muda a cor equivalente a jogada no browser*/
-            bolas[posVetor].classList.remove('cor1') 
-            bolas[posVetor].classList.add('corNPC')
+            bolas[posVetor].classList.remove('cor1'); 
+            bolas[posVetor].classList.add('corNPC');
             if (currentStatus == 1) { 
-                alteraStatus(0)
-           }
-         }
-         else {
-             /*  Manipula a class do elemento div.bolas trocando a padrão pela class do Player1 (o que na pratica muda a cor equivalente a jogada no browser*/
-            bolas[posVetor].classList.remove('cor1') 
-            bolas[posVetor].classList.add('corP1')
-         }
-        
-         confereSeTeveGanhadorNaJogada(j, i, player)
-         /* Função responsável por verificar se houve vencedor nesta jogada*/
-         
-    }
-    function vaiComputador() {  // Jogada do computador.
-        let j
-        let i 
-        let temJogada = seGanhasePerde()
-
-        if (temJogada[0]) {
-            j = temJogada[1]
-            i = temJogada[2]
-        }
-        else {
-            let auxJ = 0
-            while  (auxJ < 7) { 
-                /*Procura e todo tabuleiro, a partir da coluna 0 (primeira à esquerda), uma casa livre para jogar. */
-                    let auxI = casaLivreColunaJ(auxJ,5) 
-                    if (auxI[0]) {
-                        i = Number(auxI[1])
-                        j = auxJ
-                        auxJ = 7 // quebra o 'while' quando achar a coluna disponivel
-                    }
-                    else {
-                        auxJ++   
-                    }      
+                alteraStatus(0);
             }
         }
-        efetuaJogada(j, i, 'npc')
+        else {
+            /*  Manipula a class do elemento div.bolas trocando a padrão pela class do Player1 (o que na pratica muda a cor equivalente a jogada no browser*/
+                bolas[posVetor].classList.remove('cor1'); 
+                bolas[posVetor].classList.add('corP1');
+        }
+        confereSeTeveGanhadorNaJogada(j, i, player);
+        /* Função responsável por verificar se houve vencedor nesta jogada*/
+        if (currentStatus < 2) { 
+            /* Se não houve vencedor, verificar se ainda há espaço no tabuleiro*/
+            for (let contJ = 0; contJ < 7; contJ++){
+                if (mT[contJ][0]==0) {
+                    /*Se achar uma casa disponivel na primeira linha de qq coluna, segue o jogo*/
+                    naoAcabou=true;
+                    break;
+                }
+            }
+            if (!naoAcabou) {
+                alteraStatus(4);
+            }
+        }
     }
     function confVerticalPraBaixo(j, i, player) { 
         let contSeguidas = 1
@@ -257,7 +187,7 @@ let currentStatus
         let auxEsqCimaI = Number(i)
         let auxDirBaixoJ = Number(j)
         let auxDirBaixoI = Number(i)
-
+        
         while (auxEsqCimaJ > 0 && auxEsqCimaI > 0) {
             if (mT[auxEsqCimaJ-1][auxEsqCimaI-1] == player) { 
                 contSeguidas++
@@ -268,7 +198,7 @@ let currentStatus
                 auxEsqCimaJ = 0 // quebra o laço se não houver mais seguidas na diagona esquerda superior
             }
         }
-
+        
         while (auxDirBaixoJ < 6 && auxDirBaixoI < 5  ) {
             if (mT[auxDirBaixoJ+1][auxDirBaixoI+1] == player) { 
                 contSeguidas++
@@ -287,7 +217,7 @@ let currentStatus
         let auxEsqBaixoI = Number(i)
         let auxDirAltoJ = Number(j)
         let auxDirAltoI = Number(i)
-
+        
         while (auxEsqBaixoJ > 0 && auxEsqBaixoI < 5) {
             if (mT[auxEsqBaixoJ-1][auxEsqBaixoI+1] == player) { 
                 contSeguidas++
@@ -298,7 +228,7 @@ let currentStatus
                 auxEsqBaixoJ = 0 // quebra o laço se não houver mais seguidas na esquerda inferior
             }
         }
-
+        
         while (auxDirAltoJ < 6 && auxDirAltoI > 0) {
             if (mT[auxDirAltoJ+1][auxDirAltoI-1] == player) { 
                 contSeguidas++
@@ -335,4 +265,116 @@ let currentStatus
         } 
         
     }
-  
+    function jogadaQueGanha() { 
+        let jGanha = 0
+        let jogadaJ = 0
+        let jogadaI = 0
+        let aux = false
+        while (jGanha < 7 ) { 
+        /* Este while verifica se o computador ganha com alguma jogada nesta rodada, se sim, retorna [verdade, culuna a jogar] */
+            let recebeCasaLivre = casaLivreColunaJ(jGanha)
+            if (recebeCasaLivre[0]) {
+                let recebePonderarJogada = ponderarJogada(jGanha, recebeCasaLivre[1], 'npc')
+                if (recebePonderarJogada) {
+                    aux = true
+                    jogadaJ = Number(jGanha)
+                    jogadaI = Number(recebeCasaLivre[1])
+                    jGanha = 7 /* Força saída do laço pois achou jogada ganhadora*/
+                }
+            }
+            jGanha++
+        }
+        return [aux, jogadaJ, jogadaI]
+    }
+    function impedeSequenciaP1() { 
+    /* Função em que o computador verifica se deve ocupar alguma casa que permitiria o adversário ganhar na próxima jogada escolhendo a primeira disponível e retornando [verdade, culuna a jogar] */
+        let jogadaJ = 0;
+        let jogadaI = 0;
+        let aux = false;
+        let auxJ = 0;
+        while (auxJ < 7) { 
+            let recebeCasaLivre = casaLivreColunaJ(auxJ)
+            if (recebeCasaLivre[0]) {
+                let recebePonderarJogada = ponderarJogada(auxJ, recebeCasaLivre[1], 'p1');
+                    if (recebePonderarJogada) {
+                        aux = true;
+                        jogadaJ = Number(auxJ);
+                        jogadaI = Number(recebeCasaLivre[1]);
+                        auxJ = 7; /* Força saída do laço pois achou jogada que o oponente ganharia */
+                    }
+            }
+            auxJ++
+        }
+        return [aux, jogadaJ, jogadaI]
+    }
+    function jogaNoMeio() {
+        /* Função que visa escolher uma jogada numa das 3 colunas do meio para a inteligencia do NPC */
+        let auxI2 = Number(casaLivreColunaJ(2)[1]);
+        let auxI3 = Number(casaLivreColunaJ(3)[1]);
+        let auxI4 = Number(casaLivreColunaJ(4)[1]);
+        if (auxI4 > auxI3 && auxI4 > auxI2)  {
+            return [4, auxI4]; 
+        }
+        else if (auxI3 > auxI2 && auxI3 >= auxI4) {
+            return [3, auxI3];
+        }
+        else {
+            return [2, auxI2];
+        }          
+    }
+    function ponderarJogada(j, i, player) {
+        /*função que dada a coluna "j" e o jogador "player", que pode ser "p1 ou npc", verifica se há ou haveria vitoria com a jogada. */
+        if (confVerticalPraBaixo(j, i, player) >= 4 ) {
+            return true
+        }
+        else if (confHorizontal(j, i, player) >= 4 ) {
+            return true
+        }
+        else if (confDiagonalDecrescente(j, i, player) >=4 )  {
+            return true
+        } 
+        else if (confDiagonalCrescente(j, i, player) >=4 )  {
+            return true
+        }
+        else {
+            return false
+        }
+    }
+    function inteligenciaComputador() {  /* Jogada do computador.*/
+        let j;
+        let i;
+        let temJogada = jogadaQueGanha();
+
+        if (temJogada[0]) {
+            j = temJogada[1];
+            i = temJogada[2];
+        }
+        else {
+            temJogada = impedeSequenciaP1();
+            if (temJogada[0]) {
+                j = temJogada[1];
+                i = temJogada[2];
+            }
+            else {
+                temJogada = jogaNoMeio();
+                if (temJogada[1] >= 0) {
+                    j = temJogada[0];
+                    i = temJogada[1];
+                }
+                else {
+                    let auxJ = 0;
+                    while  (auxJ < 7) { 
+                    /*Procura e todo tabuleiro, a partir da coluna 0 (primeira à esquerda), uma casa livre para jogar. */
+                    let auxI = casaLivreColunaJ(auxJ);
+                        if (auxI[0]) {
+                            i = Number(auxI[1]);
+                            j = auxJ;
+                            auxJ = 7; // quebra o 'while' quando achar a coluna disponivel
+                        }
+                    auxJ++;  
+                    }
+                }      
+            }
+        }
+        efetuaJogada(j, i, 'npc');
+    }

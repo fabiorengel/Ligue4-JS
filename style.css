@@ -2,6 +2,7 @@
 
 :root {
     --cor1: #BB9457;
+    --cor1Paddding: #8b6323;
     --cor1Opaca: #bb955746;
     --cor2: black;
     --cor2Opaca: rgba(0, 0, 0, 0.350);
@@ -10,8 +11,8 @@
     --cor4: rgb(56, 54, 54);
     --cor5: #99582A;
     --cor6: rgba(211, 137, 114, 0.829);
-    --corP1: #FFE6A7;
-    --corNPC: #6F1D1B ;
+    --corP1: #e7ebb3;
+    --corNPC: #530a08 ;
  }
 
 * {
@@ -26,17 +27,19 @@ body {
     padding: 20px;
 }
 
-main {
+#frame1 {
     margin: auto;
-    border: 5px solid black;
+    border: 3px solid var(--cor2);
     max-height: 700px;
-    max-width: 700px;
+    max-width: 600px;
     min-height: 251px;
     min-width: 294px;
-    padding: 5px;
-    background-color: var(--cor1);
-    box-shadow: 0 0  2px black;
+    padding: 1px;
+    background-color: var(--cor1Paddding);
+    box-shadow: 1px 1px 3px 1px var(--cor2Opaca);
 }
+
+
 header {
     border: 5px solid black;
     padding: 2px;
@@ -121,8 +124,7 @@ h1 {
     background-color: var(--cor2);
     margin: auto;
     padding: 15px 5px 5px 5px;
-    border-top-left-radius: 0%;
-    border-top-right-radius: 0%;
+    border-radius: 0 0 1% 1%;
 }
 
 .linha {
@@ -152,8 +154,6 @@ h1 {
     width: 13%;
     height: 64px;
     background-color: var(--cor2);
-    
-    
 }
 
 .bola  {
