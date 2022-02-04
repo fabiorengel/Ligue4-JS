@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="style.css">
 </head>
 
-<body onload="reiniciarPartida()">
+<body onload="reiniciarPartida()" class="skin-1">
     <main id="frame1">
         <header>
             <h1>Connect Four</h1>
@@ -41,95 +41,99 @@
                         </li>
                         &gt;
                     </span>
+                    <button onclick="changeSkin()">Skin</button>
                 </ul>
             </div>
         </header>
         
-        <section id="tabuleiro">
+        <section id="mesa">
             
             <!-- Linha de Status -->
             <p id="status">
                 Clique no botão correspondente a coluna que deseja jogar!
             </p>
-            <!-- Linha 6 -  
-            Botões relativos a ação do jogador soltar a bola na coluna correspondente;
-            'onclick' chama a função de coluna correspondente e passa a informação que da coluna correspondente (param1),
-            seta a linha 6(última) como destino padrão (param2) e  informa que o player 1 ('p1' - param3)  que efetuou a jogada -->
-            <div class="linha">
-                <input class="bJogar" type="button" value="&#11015" onclick="jogadaPlayer1('0','p1')">
-                <input class="bJogar" type="button" value="&#11015" onclick="jogadaPlayer1('1','p1')">
-                <input class="bJogar" type="button" value="&#11015" onclick="jogadaPlayer1('2','p1')">
-                <input class="bJogar" type="button" value="&#11015" onclick="jogadaPlayer1('3','p1')">
-                <input class="bJogar" type="button" value="&#11015" onclick="jogadaPlayer1('4','p1')">
-                <input class="bJogar" type="button" value="&#11015" onclick="jogadaPlayer1('5','p1')">
-                <input class="bJogar" type="button" value="&#11015" onclick="jogadaPlayer1('6','p1')">
-            </div>
+                            <!-- Linha 6 -  
+                Botões relativos a ação do jogador soltar a bola na coluna correspondente;
+                'onclick' chama a função de coluna correspondente e passa a informação que da coluna correspondente (param1),
+                seta a linha 6(última) como destino padrão (param2) e  informa que o player 1 ('p1' - param3)  que efetuou a jogada -->
+            <section class="indicador-jogada">
+                <div class="linha">
+                    <input class="bJogar" type="button" value="&#11015" onclick="jogadaPlayer1('0','p1')">
+                    <input class="bJogar" type="button" value="&#11015" onclick="jogadaPlayer1('1','p1')">
+                    <input class="bJogar" type="button" value="&#11015" onclick="jogadaPlayer1('2','p1')">
+                    <input class="bJogar" type="button" value="&#11015" onclick="jogadaPlayer1('3','p1')">
+                    <input class="bJogar" type="button" value="&#11015" onclick="jogadaPlayer1('4','p1')">
+                    <input class="bJogar" type="button" value="&#11015" onclick="jogadaPlayer1('5','p1')">
+                    <input class="bJogar" type="button" value="&#11015" onclick="jogadaPlayer1('6','p1')">
+                </div>
+            </section>
+            <section id="tabuleiro">
+                <!-- Linha 5 -->
+                <div class="linha">
+                    <div class="quadrado"><div class="bola"></div></div>
+                    <div class="quadrado"><div class="bola"></div></div>
+                    <div class="quadrado"><div class="bola"></div></div>
+                    <div class="quadrado"><div class="bola"></div></div>
+                    <div class="quadrado"><div class="bola"></div></div>
+                    <div class="quadrado"><div class="bola"></div></div>
+                    <div class="quadrado"><div class="bola"></div></div>
+                </div>
 
-            <!-- Linha 5 -->
-            <div class="linha">
-                <div class="quadrado"><div class="bola"></div></div>
-                <div class="quadrado"><div class="bola"></div></div>
-                <div class="quadrado"><div class="bola"></div></div>
-                <div class="quadrado"><div class="bola"></div></div>
-                <div class="quadrado"><div class="bola"></div></div>
-                <div class="quadrado"><div class="bola"></div></div>
-                <div class="quadrado"><div class="bola"></div></div>
-            </div>
+                <!-- Linha 4 -->
+                <div class="linha">
+                    <div class="quadrado"><div class="bola"></div></div>
+                    <div class="quadrado"><div class="bola"></div></div>
+                    <div class="quadrado"><div class="bola"></div></div>
+                    <div class="quadrado"><div class="bola"></div></div>
+                    <div class="quadrado"><div class="bola"></div></div>
+                    <div class="quadrado"><div class="bola"></div></div>
+                    <div class="quadrado"><div class="bola"></div></div>
+                </div>
 
-            <!-- Linha 4 -->
-            <div class="linha">
-                <div class="quadrado"><div class="bola"></div></div>
-                <div class="quadrado"><div class="bola"></div></div>
-                <div class="quadrado"><div class="bola"></div></div>
-                <div class="quadrado"><div class="bola"></div></div>
-                <div class="quadrado"><div class="bola"></div></div>
-                <div class="quadrado"><div class="bola"></div></div>
-                <div class="quadrado"><div class="bola"></div></div>
-            </div>
+                <!-- Linha 3 -->
+                <div class="linha">
+                    <div class="quadrado"><div class="bola"></div></div>
+                    <div class="quadrado"><div class="bola"></div></div>
+                    <div class="quadrado"><div class="bola"></div></div>
+                    <div class="quadrado"><div class="bola"></div></div>
+                    <div class="quadrado"><div class="bola"></div></div>
+                    <div class="quadrado"><div class="bola"></div></div>
+                    <div class="quadrado"><div class="bola"></div></div>
+                </div>
 
-            <!-- Linha 3 -->
-            <div class="linha">
-                <div class="quadrado"><div class="bola"></div></div>
-                <div class="quadrado"><div class="bola"></div></div>
-                <div class="quadrado"><div class="bola"></div></div>
-                <div class="quadrado"><div class="bola"></div></div>
-                <div class="quadrado"><div class="bola"></div></div>
-                <div class="quadrado"><div class="bola"></div></div>
-                <div class="quadrado"><div class="bola"></div></div>
-            </div>
+                <!-- Linha 2 -->
+                <div class="linha">
+                    <div class="quadrado"><div class="bola"></div></div>
+                    <div class="quadrado"><div class="bola"></div></div>
+                    <div class="quadrado"><div class="bola"></div></div>
+                    <div class="quadrado"><div class="bola"></div></div>
+                    <div class="quadrado"><div class="bola"></div></div>
+                    <div class="quadrado"><div class="bola"></div></div>
+                    <div class="quadrado"><div class="bola"></div></div>
+                </div>
+            
+                <!-- Linha 1 -->
+                <div class="linha">
+                    <div class="quadrado"><div class="bola"></div></div>
+                    <div class="quadrado"><div class="bola"></div></div>
+                    <div class="quadrado"><div class="bola"></div></div>
+                    <div class="quadrado"><div class="bola"></div></div>
+                    <div class="quadrado"><div class="bola"></div></div>
+                    <div class="quadrado"><div class="bola"></div></div>
+                    <div class="quadrado"><div class="bola"></div></div>
+                </div>
 
-            <!-- Linha 2 -->
-            <div class="linha">
-                <div class="quadrado"><div class="bola"></div></div>
-                <div class="quadrado"><div class="bola"></div></div>
-                <div class="quadrado"><div class="bola"></div></div>
-                <div class="quadrado"><div class="bola"></div></div>
-                <div class="quadrado"><div class="bola"></div></div>
-                <div class="quadrado"><div class="bola"></div></div>
-                <div class="quadrado"><div class="bola"></div></div>
-            </div>
-        
-            <!-- Linha 1 -->
-            <div class="linha">
-                <div class="quadrado"><div class="bola"></div></div>
-                <div class="quadrado"><div class="bola"></div></div>
-                <div class="quadrado"><div class="bola"></div></div>
-                <div class="quadrado"><div class="bola"></div></div>
-                <div class="quadrado"><div class="bola"></div></div>
-                <div class="quadrado"><div class="bola"></div></div>
-                <div class="quadrado"><div class="bola"></div></div>
-            </div>
-
-            <!-- Linha0 -->
-            <div class="linha">
-                <div class="quadrado"><div class="bola"></div></div>
-                <div class="quadrado"><div class="bola"></div></div>
-                <div class="quadrado"><div class="bola"></div></div>
-                <div class="quadrado"><div class="bola"></div></div>
-                <div class="quadrado"><div class="bola"></div></div>
-                <div class="quadrado"><div class="bola"></div></div>
-                <div class="quadrado"><div class="bola"></div></div>
-            </div>
+                <!-- Linha0 -->
+                <div class="linha">
+                    <div class="quadrado"><div class="bola"></div></div>
+                    <div class="quadrado"><div class="bola"></div></div>
+                    <div class="quadrado"><div class="bola"></div></div>
+                    <div class="quadrado"><div class="bola"></div></div>
+                    <div class="quadrado"><div class="bola"></div></div>
+                    <div class="quadrado"><div class="bola"></div></div>
+                    <div class="quadrado"><div class="bola"></div></div>
+                </div>
+            </section>
         </section>
     </main>
 

@@ -30,7 +30,7 @@ let currentStatus
         currentStatus = s
         if (s==1) {
             statusJogo.innerText = 'É a vez do computador jogar...'
-            setTimeout(inteligenciaComputador, 1200) // chama o NPC após X milisegundos
+            setTimeout(inteligenciaComputador, 1000) // chama o NPC após X milisegundos
         }
         else if (s==2) {
             statusJogo.innerHTML = 'Parabéns, você ganhou!';
@@ -400,4 +400,9 @@ let currentStatus
             }
         }
         efetuaJogada(j, i, 'npc');
+    }
+
+    const changeSkin = function() {
+        const cuerpo = document.querySelector('body');
+        cuerpo.classList.toggle('skin-1');
     }
