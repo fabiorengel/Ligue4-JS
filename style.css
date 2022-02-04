@@ -1,5 +1,10 @@
 @charset "UTF-8";
 
+@keyframes youwin {
+    0% { transform: scale(.5) };
+    100% { transform: scale(1) };
+}
+
 :root {
     --cor1: #BB9457;
     --cor1Paddding: #8b6323;
@@ -24,7 +29,6 @@
 
 body {
     background-color: var(--cor1);
-    padding: 20px;
 }
 
 #frame1 {
@@ -34,7 +38,6 @@ body {
     max-width: 600px;
     min-height: 251px;
     min-width: 294px;
-    padding: 1px;
     background-color: var(--cor1Paddding);
     box-shadow: 1px 1px 3px 1px var(--cor2Opaca);
 }
@@ -42,7 +45,6 @@ body {
 
 header {
     border: 5px solid black;
-    padding: 2px;
     background-color: var(--cor1);
     box-shadow: inset 0 0 500px var(--cor2Opaca);
     border-radius: 1% 1% 0% 0%;
@@ -58,7 +60,7 @@ h1 {
 }
 
 #menu {
-    border: 1px solid black;
+    border-top: 1px solid black;
     padding: 0.2em 0 0.2em 0.1em ;
 }
 
@@ -109,7 +111,7 @@ h1 {
 }
 
 #status {
-    margin-bottom: 15px;
+    margin: 1rem 0;
     border-radius: 0%;
     border: 1px solid var(--cor1);
     box-shadow: inset 0 0 100px var(--cor1Opaca);
@@ -117,7 +119,7 @@ h1 {
     color: var(--cor3);
     font-size: 1.3em;
     text-indent: 10pt;
-    text-shadow: 1px 1px 1px var(--cor3Opaca);    
+    text-shadow: 1px 1px 1px var(--cor3Opaca);
 }
 
 #tabuleiro {
@@ -131,7 +133,12 @@ h1 {
     width: 100%;
     background: var(--cor2);
     display: flex;
-    justify-content: space-evenly/*space-between;*/
+    justify-content: space-evenly;
+}
+
+.indicador-jogada .linha {
+    background: transparent;
+    margin-bottom: 1rem;
 }
 
 .bJogar {
@@ -153,7 +160,6 @@ h1 {
     display: block;
     width: 13%;
     height: 64px;
-    background-color: var(--cor2);
 }
 
 .bola  {
@@ -181,4 +187,51 @@ h1 {
 }
 .testeP1 {
     border: 1px solid var(--corP1);
+}
+
+.testeNPC, .testeP1 {
+    animation: youwin .625s ease-in-out infinite alternate;
+}
+
+html .skin-1  {
+    --corP1: #f4d06f;
+    --corNPC: #f87575;
+    --cor2: #5c95ff;
+    --cor1: #ffe7e6;
+}
+
+.skin-1 #frame1 {
+    border: 0;
+    background: rgba(92,149,255,.75);
+}
+
+.skin-1 #status {
+    background-color: transparent;
+    text-align: center;
+    font-family: sans-serif;
+    color: white;
+}
+
+.skin-1 #tabuleiro {
+    border-top: 2px solid rgba(0, 0, 0, .33);
+}
+
+.skin-1 .bJogar {
+    background-image: radial-gradient(circle at center, var(--cor1), rgba(0, 0, 0, .22));
+}
+
+.skin-1 .bJogar:hover {
+    background-image: radial-gradient(circle at center, var(--corP1), rgba(0, 0, 0, .22));
+}
+
+@media screen and (max-width: 480px) {
+    #status {
+        font-size: .875rem;
+        padding: .25rem 0;
+    }
+
+    .quadrado {
+        height: 48px;
+    }
+    
 }
