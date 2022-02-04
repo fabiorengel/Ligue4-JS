@@ -72,6 +72,7 @@ let currentStatus;
                 }
             }
             else {
+                alert('Jogada Inválida - Coluna sem casas livres');
                 /* Acontece se o Player 1 tentar jogar numa coluna completa */
             }
         }
