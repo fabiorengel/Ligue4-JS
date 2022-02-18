@@ -37,7 +37,7 @@ let currentStatus;
             statusJogo.innerHTML = 'O jogo acabou sem vencedores!'
         }    
         else {
-            statusJogo.innerText = 'Sua vez de jogar...'
+            statusJogo.innerHTML = 'Sua vez de jogar... <br><p>Clique no botão da coluna que deseja jogar!'
         }
     }
     function casaLivreColunaJ(j) { /* Função na versão final*/
