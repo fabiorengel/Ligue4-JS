@@ -1,6 +1,6 @@
 # Ligue 4 - Connect Four
 
-> Projeto para estudo de HTML/CSS/JavaScript!
+#### Projeto para estudo de HTML/CSS/JavaScript!
 
 Olá, você.
 
@@ -13,7 +13,7 @@ Espero que gostem e sintam-se a vontade para me contactar: <fabiorengel@gmail.co
 
 -------
 
-> Project to study HTML/CSS/JavaScript!
+#### Project to study HTML/CSS/JavaScript!
 
 Hello there. 
 
